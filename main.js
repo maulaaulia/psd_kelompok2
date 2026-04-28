@@ -195,6 +195,50 @@ function setActive(btn) {
 // ================= LOAD DEFAULT =================
 window.onload = () => {
   if (isDashboard && content) {
-    showDashboard();
+    showHome(); // sekarang default ke HOME
   }
 };
+
+// ================= HOME =================
+function showHome() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Home";
+
+  if (!content) return;
+
+  let latest = todos[todos.length - 1];
+
+  content.innerHTML = `
+    <div class="card">
+      <h3>Tugas Terakhir</h3>
+
+      ${
+        todos.length === 0
+          ? `<div class="empty">Belum ada tugas 🥱</div>`
+          : `
+            <button onclick="showTasks()" style="
+              width:100%;
+              padding:20px;
+              border:none;
+              border-radius:15px;
+              background:rgba(255,255,255,0.7);
+              cursor:pointer;
+              text-align:left;
+              transition:0.3s;
+            " onmouseover="this.style.transform='scale(1.02)'" 
+              onmouseout="this.style.transform='scale(1)'">
+
+              <div style="font-size:16px; font-weight:600;">
+                ${latest.text}
+              </div>
+
+              <div style="font-size:12px; color:#888; margin-top:5px;">
+                Klik untuk lihat semua tugas
+              </div>
+
+            </button>
+          `
+      }
+    </div>
+  `;
+}
