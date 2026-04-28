@@ -175,8 +175,11 @@ function showAdd() {
 function showCalendar() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Calendar & Deadline";
-  if (!content) return;
+  
+  // Pastikan variabel 'content' sudah didefinisikan di awal file
+  if (!content) return; 
 
+  // Filter tugas yang punya deadline dan belum selesai
   const sortedTasks = todos
     .filter(t => t.deadline && t.deadline !== "Tanpa Deadline" && !t.done)
     .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
@@ -199,7 +202,9 @@ function showCalendar() {
         <div style="border-left: 5px solid ${statusColor}; background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 0 10px 10px 0;">
           <div style="display: flex; justify-content: space-between;">
             <strong>${t.text}</strong>
-            <span style="color: ${statusColor}; font-weight: bold;">${diffDays < 0 ? 'Terlewat' : diffDays + ' Hari lagi'}</span>
+            <span style="color: ${statusColor}; font-weight: bold;">
+              ${diffDays < 0 ? 'Terlewat' : diffDays + ' Hari lagi'}
+            </span>
           </div>
           <small>Deadline: ${t.deadline}</small>
         </div>
@@ -256,47 +261,3 @@ function setActive(btn) {
 window.onload = () => {
   if (isDashboard && content) showHome();
 };
-// ================= VIEW: CALENDAR =================
-function showCalendar() {
-  const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Calendar & Deadline";
-  
-  // Pastikan variabel 'content' sudah didefinisikan di awal file
-  if (!content) return; 
-
-  // Filter tugas yang punya deadline dan belum selesai
-  const sortedTasks = todos
-    .filter(t => t.deadline && t.deadline !== "Tanpa Deadline" && !t.done)
-    .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-
-  let html = `
-    <div class="card">
-      <h3>📅 Pengingat Deadline</h3>
-      <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Tugas diurutkan dari yang paling mendesak.</p>
-  `;
-
-  if (sortedTasks.length === 0) {
-    html += `<div class="empty">Tidak ada deadline aktif ✨</div>`;
-  } else {
-    sortedTasks.forEach(t => {
-      const diffTime = new Date(t.deadline) - new Date();
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      const statusColor = diffDays <= 2 ? "#ffadad" : "#a0c4ff";
-
-      html += `
-        <div style="border-left: 5px solid ${statusColor}; background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 0 10px 10px 0;">
-          <div style="display: flex; justify-content: space-between;">
-            <strong>${t.text}</strong>
-            <span style="color: ${statusColor}; font-weight: bold;">
-              ${diffDays < 0 ? 'Terlewat' : diffDays + ' Hari lagi'}
-            </span>
-          </div>
-          <small>Deadline: ${t.deadline}</small>
-        </div>
-      `;
-    });
-  }
-
-  html += `</div>`;
-  content.innerHTML = html;
-}
