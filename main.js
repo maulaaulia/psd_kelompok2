@@ -1,7 +1,19 @@
-// ================= CEK HALAMAN =================
+// ================= DATA & STATE =================
 const isDashboard = window.location.pathname.includes("dashboard.html");
+const content = document.querySelector(".content");
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-// ================= LOGIN =================
+function save() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+// ================= USER INFO =================
+const userName = document.getElementById("userName");
+if (userName) {
+  userName.innerText = "👋 Hi, " + (localStorage.getItem("user") || "User");
+}
+
+// ================= LOGIN & LOGOUT =================
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -15,36 +27,22 @@ function login() {
   }
 }
 
-// ================= CEK LOGIN =================
-if (isDashboard) {
-  if (!localStorage.getItem("login")) {
-    window.location.href = "index.html";
-  }
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
 }
 
-// ================= USER NAME =================
-const userName = document.getElementById("userName");
-if (userName) {
-  userName.innerText = "👋 Hi, " + (localStorage.getItem("user") || "User");
-}
-
-// ================= DATA =================
-const content = document.querySelector(".content");
-let todos = JSON.parse(localStorage.getItem("todos")) || [];
-
-// ================= DASHBOARD =================
+// ================= VIEW: DASHBOARD =================
 function showDashboard() {
+  if (!content) return;
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Dashboard";
-
-  if (!content) return;
 
   content.innerHTML = `
     <div class="card big">
       <h3>Selamat Datang ✨</h3>
-      <p>Mulai atur tugasmu hari ini dengan lebih rapi dan produktif.</p>
+      <p>Kelola tugas kuliahmu dengan sistem Stack (LIFO).</p>
     </div>
-
     <div class="grid">
       <div class="card">
         <h4>📌 Total Tugas</h4>
@@ -54,116 +52,85 @@ function showDashboard() {
         <h4>✅ Selesai</h4>
         <div class="number">${todos.filter(t => t.done).length}</div>
       </div>
-      <div class="card">
-        <h4>⏳ Belum</h4>
-        <div class="number">${todos.filter(t => !t.done).length}</div>
-      </div>
     </div>
   `;
 }
 
-// ================= TASK =================
-function showTasks() {
-  const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tugas";
-
-  if (!content) return;
-
-  content.innerHTML = `
-    <div class="card">
-      <h3>Daftar Tugas (STACK - LIFO)</h3>
-
-      ${
-        todos.length === 0
-          ? `<div class="empty">Belum ada tugas 🥱</div>`
-          : todos
-              .map((t, i) => `
-                <div class="task-row">
-                  <span class="task-text ${t.done ? 'done' : ''}">
-                    ${t.text}
-                  </span>
-
-                  <button class="icon-btn done-btn" onclick="toggle(${i})">✔</button>
-                  <button class="icon-btn delete-btn" onclick="removeTodo()">✖</button>
-                </div>
-              `)
-              .reverse()
-              .join("")
-      }
-    </div>
-  `;
-}
-
-// ================= ADD =================
+// ================= VIEW: TAMBAH TUGAS (PUSH) =================
 function showAdd() {
-  const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tambah";
-
   if (!content) return;
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tambah Tugas";
 
   content.innerHTML = `
-    <div class="piano-bg"></div>
-
     <div class="card">
-      <h3>Tambah Tugas</h3>
-      <input id="todoInput" placeholder="Tulis tugas..." />
-      <button class="btn-login" onclick="addTodo()">Tambah</button>
+      <h3>Tambah Tugas Baru</h3>
+      <input id="todoInput" placeholder="Ketik tugas di sini..." />
+      <button class="btn-login" onclick="addTodo()">Push ke Stack</button>
     </div>
   `;
 }
 
-// ================= ACTION =================
+// ================= VIEW: DAFTAR TUGAS (LIFO DISPLAY) =================
+function showTasks() {
+  if (!content) return;
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Daftar Tugas";
+
+  let html = `<div class="header">Tumpukan Tugas (Terbaru di Atas)</div>`;
+
+  if (todos.length === 0) {
+    html += `<div class="empty">Tumpukan kosong 😴</div>`;
+  } else {
+    // Membalik urutan (reverse) untuk simulasi Stack/LIFO di UI
+    [...todos].reverse().forEach((t, i) => {
+      const isTop = (i === 0) ? '<span class="badge">TOP</span>' : '';
+      html += `
+        <div class="task ${i === 0 ? 'top-task' : ''}">
+          <span>${t.text} ${isTop}</span>
+        </div>
+      `;
+    });
+  }
+  content.innerHTML = html;
+}
+
+// ================= CORE ACTIONS (STACK OPS) =================
+
 function addTodo() {
   const input = document.getElementById("todoInput");
   if (!input || !input.value.trim()) return;
 
-  todos.push({
-    text: input.value,
-    done: false
-  });
-
+  // PUSH: Menambah ke urutan terakhir array
+  todos.push({ text: input.value, done: false });
+  
+  save();
   input.value = "";
-  save();
-  showTasks();
+  alert("Tugas berhasil di-push!");
+  showTasks(); // Pindah ke list untuk lihat hasilnya
 }
 
-function toggle(i) {
-  todos[i].done = !todos[i].done;
-  save();
-  showTasks();
-}
-
-// LIFO (STACK)
 function removeTodo() {
   if (todos.length === 0) {
-    alert("Stack kosong!");
+    alert("Stack Kosong!");
     return;
   }
 
+  // POP: Menghapus elemen paling terakhir (LIFO)
   const removed = todos.pop();
-  alert("Menghapus tugas terakhir: " + removed.text);
+  alert("Pop Berhasil! Tugas diselesaikan: " + removed.text);
 
   save();
-  showTasks();
+  // Refresh tampilan tergantung halaman aktif
+  const title = document.getElementById("pageTitle");
+  if (title && title.innerText === "Daftar Tugas") {
+    showTasks();
+  } else {
+    showDashboard();
+  }
 }
 
-function save() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-// ================= LOGOUT =================
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
-}
-
-// ================= ACTIVE MENU =================
-function setActive(btn) {
-  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-}
-
-// ================= DEFAULT LOAD =================
+// ================= LOAD AWAL =================
 if (isDashboard && content) {
   showDashboard();
 }
