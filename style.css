@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #dbeafe, #fff7cc);
+  background: linear-gradient(135deg, #e0f2fe, #fef9c3);
 }
 
 /* ================= LOGIN ================= */
@@ -21,8 +21,8 @@ body {
 /* ================= SIDEBAR ================= */
 aside {
   width: 230px;
-  background: rgba(180, 210, 255, 0.7);
-  backdrop-filter: blur(12px);
+  background: rgba(200, 220, 255, 0.85); /* cuma ganti warna */
+  backdrop-filter: blur(10px);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@ nav {
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  background: linear-gradient(135deg, #60a5fa, #93c5fd);
   color: white;
   cursor: pointer;
   transition: 0.3s;
@@ -56,7 +56,7 @@ nav {
 }
 
 .nav-btn.active {
-  background: linear-gradient(135deg, #3b82f6, #818cf8);
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
 }
 
 /* ================= BOTTOM ================= */
@@ -87,6 +87,10 @@ main {
   align-items: center;
 }
 
+.topbar h1 {
+  margin: 0;
+}
+
 .user {
   background: white;
   padding: 8px 15px;
@@ -102,11 +106,15 @@ main {
 /* ================= CARD ================= */
 .card {
   background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
   padding: 20px;
   border-radius: 18px;
   margin-bottom: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.card.big {
+  font-size: 15px;
 }
 
 /* ================= GRID ================= */
@@ -126,7 +134,8 @@ main {
 /* ================= EMPTY ================= */
 .empty {
   text-align: center;
-  color: #777;
+  color: #888;
+  margin-top: 10px;
 }
 
 /* ================= INPUT ================= */
@@ -140,14 +149,21 @@ input {
   background: #eef4ff;
 }
 
-/* ================= BUTTON ================= */
+/* ================= BUTTON GENERAL ================= */
 button {
   cursor: pointer;
 }
 
-/* ================= LOGIN CARD ================= */
+/* ================= LOGIN MODERN ================= */
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-card {
-  background: rgba(255,255,255,0.65);
+  background: rgba(255,255,255,0.6);
   backdrop-filter: blur(20px);
   padding: 35px;
   border-radius: 25px;
@@ -156,7 +172,13 @@ button {
   box-shadow: 0 20px 40px rgba(0,0,0,0.08);
 }
 
-/* ================= BUTTON LOGIN ================= */
+.subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* BUTTON LOGIN */
 .btn-login {
   width: 100%;
   padding: 12px;
@@ -171,7 +193,7 @@ button {
 
 .btn-login:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
 /* ================= TASK ================= */
@@ -183,6 +205,10 @@ button {
   margin-top: 8px;
   border-radius: 12px;
   background: rgba(255,255,255,0.7);
+}
+
+.task-text {
+  flex: 1;
 }
 
 .done {
@@ -197,7 +223,12 @@ button {
   height: 30px;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
   transition: 0.2s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
 }
 
 .done-btn {
@@ -208,7 +239,7 @@ button {
   background: #fecaca;
 }
 
-/* ================= BACKGROUND ================= */
+/* ================= BACKGROUND (TETAP HALUS) ================= */
 .piano-bg {
   position: fixed;
   top: 0;
@@ -224,15 +255,13 @@ button {
   position: absolute;
   width: 200%;
   height: 200%;
-
   background: repeating-linear-gradient(
     90deg,
-    rgba(255,255,255,0.05) 0px,
-    rgba(255,255,255,0.05) 10px,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 10px,
     transparent 10px,
     transparent 40px
   );
-
   animation: flow 12s linear infinite;
 }
 
