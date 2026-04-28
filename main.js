@@ -194,8 +194,8 @@ function setActive(btn) {
 
 // ================= LOAD DEFAULT =================
 window.onload = () => {
-  if (isDashboard && content) {
-    showDashboard();
+  if (content) {
+    showHome();
   }
 };
 
