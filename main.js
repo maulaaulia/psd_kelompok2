@@ -36,41 +36,28 @@ function save() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// ================= VIEW: HOME =================
+// ================= HOME =================
 function showHome() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Home";
+
   if (!content) return;
 
-  let latest = todos[todos.length - 1];
+  // ambil tugas terakhir (top stack)
+  const last = todos[todos.length - 1];
 
   content.innerHTML = `
     <div class="card">
-      <h3>Tugas Terakhir</h3>
-      ${
-        todos.length === 0
-          ? `<div class="empty">Belum ada tugas 🥱</div>`
-          : `
-            <button onclick="showTasks()" style="
-              width:100%;
-              padding:20px;
-              border:none;
-              border-radius:15px;
-              background:rgba(255,255,255,0.7);
-              cursor:pointer;
-              text-align:left;
-              transition:0.3s;
-            " onmouseover="this.style.transform='scale(1.02)'" 
-              onmouseout="this.style.transform='scale(1)'">
+      <h3>🏠 Home</h3>
 
-              <div style="font-size:16px; font-weight:600;">
-                ${latest.text}
-              </div>
-              <div style="font-size:12px; color:#bdb2ff; margin-top:5px; font-weight:bold;">
-                ⏰ Deadline: ${latest.deadline || 'Tanpa Deadline'}
-              </div>
-              <div style="font-size:12px; color:#888; margin-top:5px;">
-                Klik untuk lihat semua tugas
+      ${
+        !last
+          ? `<div class="empty">Belum ada tugas ✨</div>`
+          : `
+            <button class="task-row" onclick="showTasks()" style="width:100%; text-align:left;">
+              <div class="task-text">
+                <b>Tugas Terakhir</b><br>
+                ${last.text}
               </div>
             </button>
           `
