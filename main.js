@@ -142,3 +142,15 @@ function keluar() {
     location.reload();
   }
 }
+function popTodo() {
+  if (todos.length === 0) {
+    alert("Stack kosong!");
+    return;
+  }
+
+  let removed = todos.pop(); // LIFO
+  save();
+
+  alert("Menghapus tugas terakhir: " + removed.text);
+  showTasks();
+}
