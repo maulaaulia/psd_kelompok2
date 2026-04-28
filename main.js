@@ -63,9 +63,15 @@ function showDashboard() {
 }
 
 // ================= TASK =================
-// MODIFIKASI FUNGSI TAMPIL TUGAS
 function showTasks() {
-  let html = `<div class="header">Daftar Tugas (Stack)</div>`;
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tugas";
+
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="card">
+      <h3>Daftar Tugas (STACK - LIFO)</h3>
 
   if (tasks.length === 0) {
     html += `<div class="empty">Tumpukan kosong, silakan tambah tugas ✨</div>`;
@@ -96,6 +102,9 @@ function deleteLast() {
   } else {
     alert("Gak ada tugas yang bisa dihapus, tumpukan kosong!");
   }
+}
+    </div>
+  `;
 }
 
 
@@ -133,14 +142,12 @@ function addTodo() {
 }
 
 function toggle(i) {
-  if (i < 0 || i >= todos.length) return;
-
   todos[i].done = !todos[i].done;
   save();
   showTasks();
 }
 
-// LIFO DELETE (STACK)
+// LIFO (STACK)
 function removeTodo() {
   if (todos.length === 0) {
     alert("Stack kosong!");
