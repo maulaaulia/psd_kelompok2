@@ -227,28 +227,34 @@ function showCalendar() {
   content.innerHTML = html;
 }
 
+
 // ================= CORE ACTIONS =================
 function addTodo() {
   const input = document.getElementById("todoInput");
   const dateInput = document.getElementById("deadlineInput");
+
   if (!input || !input.value.trim()) return;
 
   todos.push({
     text: input.value.trim(),
-    deadline: dateInput.value || "Tanpa Deadline",
+    deadline: dateInput ? dateInput.value : "Tanpa Deadline",
     done: false
   });
 
   input.value = "";
-  if(dateInput) dateInput.value = "";
+
+  if (dateInput) dateInput.value = "";
+
   save();
-  showTasks(); 
+  showTasks();
 }
 
 function removeTodo() {
   if (todos.length === 0) return alert("Stack kosong!");
+  
   const removed = todos.pop();
   alert("Pop Berhasil! Menghapus: " + removed.text);
+  
   save();
   showTasks();
 }
