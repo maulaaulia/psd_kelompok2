@@ -30,7 +30,12 @@ if (userName) {
 
 // ================= DATA =================
 const content = document.querySelector(".content");
+// Konsisten menggunakan satu variabel 'todos'
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+function save() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
 
 // ================= DASHBOARD =================
 function showDashboard() {
@@ -62,53 +67,40 @@ function showDashboard() {
   `;
 }
 
-// ================= TASK =================
+// ================= TASK (TAMPILAN STACK - LIFO) =================
 function showTasks() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Tugas";
 
   if (!content) return;
 
-  content.innerHTML = `
+  // Inisialisasi awal HTML
+  let html = `
     <div class="card">
       <h3>Daftar Tugas (STACK - LIFO)</h3>
+  `;
 
-  if (tasks.length === 0) {
+  if (todos.length === 0) {
     html += `<div class="empty">Tumpukan kosong, silakan tambah tugas ✨</div>`;
   } else {
-    // Tampilkan tugas, tapi TANPA tombol hapus di tiap barisnya
-    tasks.slice().reverse().forEach((t, i) => {
-      // Kita kasih tanda mana yang 'Top of Stack'
-      const isTop = (i === 0) ? '<span class="badge">TERATAS</span>' : '';
+    // LIFO: Membalik urutan agar yang terakhir masuk muncul di atas
+    [...todos].reverse().forEach((t, i) => {
+      const isTop = (i === 0) ? '<span class="badge" style="background:#a0c4ff; color:white; padding:2px 8px; border-radius:10px; font-size:10px; margin-left:10px;">TERATAS</span>' : '';
       
       html += `
-        <div class="task ${i === 0 ? 'top-task' : ''}">
-          <span>${t} ${isTop}</span>
+        <div class="task ${i === 0 ? 'top-task' : ''}" style="border-bottom:1px solid #eee; padding:10px 0; display:flex; justify-content:space-between;">
+          <span>${t.text} ${isTop}</span>
+          <small style="color:#aaa;">${t.done ? 'Selesai' : 'Tumpukan'}</small>
         </div>
       `;
     });
   }
 
-  document.getElementById("content").innerHTML = html;
+  html += `</div>`; // Menutup tag <div class="card">
+  content.innerHTML = html;
 }
 
-// FUNGSI SATU-SATUNYA UNTUK HAPUS (LIFO)
-function deleteLast() {
-  if (tasks.length > 0) {
-    // POP: Mengambil elemen terakhir yang masuk
-    const removed = tasks.pop(); 
-    alert(`Berhasil menyelesaikan tugas teratas: "${removed}"`);
-    showTasks();
-  } else {
-    alert("Gak ada tugas yang bisa dihapus, tumpukan kosong!");
-  }
-}
-    </div>
-  `;
-}
-
-
-// ================= ADD =================
+// ================= ADD PAGE =================
 function showAdd() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Tambah";
@@ -117,16 +109,17 @@ function showAdd() {
 
   content.innerHTML = `
     <div class="piano-bg"></div>
-
     <div class="card">
       <h3>Tambah Tugas</h3>
       <input id="todoInput" placeholder="Tulis tugas..." />
-      <button class="btn-login" onclick="addTodo()">Tambah</button>
+      <button class="btn-login" onclick="addTodo()">Push ke Stack</button>
     </div>
   `;
 }
 
-// ================= ACTION =================
+// ================= ACTION (LOGIC STACK) =================
+
+// PUSH: Menambah tugas
 function addTodo() {
   const input = document.getElementById("todoInput");
   if (!input || !input.value.trim()) return;
@@ -138,31 +131,31 @@ function addTodo() {
 
   input.value = "";
   save();
-  showTasks();
+  showTasks(); // Langsung lihat daftar setelah nambah
 }
 
-function toggle(i) {
-  todos[i].done = !todos[i].done;
-  save();
-  showTasks();
-}
-
-// LIFO (STACK)
+// POP: Menghapus tugas terakhir (LIFO)
 function removeTodo() {
   if (todos.length === 0) {
-    alert("Stack kosong!");
+    alert("Stack kosong! Tidak ada tugas yang bisa dihapus.");
     return;
   }
 
+  // Mengambil elemen terakhir
   const removed = todos.pop();
-  alert("Menghapus tugas terakhir: " + removed.text);
+  alert("Berhasil menghapus tugas teratas: " + removed.text);
 
   save();
   showTasks();
 }
 
-function save() {
-  localStorage.setItem("todos", JSON.stringify(todos));
+// TOGGLE: Menandai selesai (Opsional)
+function toggle(i) {
+  if (todos[i]) {
+    todos[i].done = !todos[i].done;
+    save();
+    showTasks();
+  }
 }
 
 // ================= LOGOUT =================
