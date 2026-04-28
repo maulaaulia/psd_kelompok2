@@ -90,9 +90,7 @@ function showTasks() {
     </div>
   `;
 }
-    </div>
-  `;
-}
+
 
 // ================= ADD =================
 function showAdd() {
