@@ -14,40 +14,36 @@
   <div id="app">
 
     <aside>
-      <h2 class="logo">🌸 Todo</h2>
+  <h2 class="logo">🌸 Todo</h2>
 
-    <nav>
-  <button class="nav-btn active" onclick="setActive(this); showDashboard()">
-    <img src="icon/home.png" class="nav-icon"> Home
-  </button>
+  <nav>
+    <button class="nav-btn active" onclick="setActive(this); showDashboard()">
+      <img src="icon/home.png" class="nav-icon"> Home
+    </button>
 
-  <button class="nav-btn" onclick="setActive(this); showDashboard()">
-    <img src="icon/dashboard.png" class="nav-icon"> Dashboard
-  </button>
+    <button class="nav-btn" onclick="setActive(this); showDashboard()">
+      <img src="icon/dashboard.png" class="nav-icon"> Dashboard
+    </button>
 
-  <button class="nav-btn" onclick="setActive(this); showTasks()">
-    <img src="icon/task.png" class="nav-icon"> Tugas
-  </button>
+    <button class="nav-btn" onclick="setActive(this); showTasks()">
+      <img src="icon/task.png" class="nav-icon"> Tugas
+    </button>
 
-  <button class="nav-btn" onclick="setActive(this); showAdd()">
-    <img src="icon/tambah.png" class="nav-icon"> Tambah
-  </button>
+    <button class="nav-btn" onclick="setActive(this); showAdd()">
+      <img src="icon/tambah.png" class="nav-icon"> Tambah
+    </button>
 
-  <button class="nav-btn">
-    <img src="icon/calendar.png" class="nav-icon"> Kalender
-  </button>
-</nav>
+    <button class="nav-btn" onclick="setActive(this); showCalendar()">
+      <img src="icon/calendar.png" class="nav-icon"> Kalender
+    </button>
+  </nav>
 
-<div class="bottom">
-  <button class="logout" onclick="logout()">
-    <img src="icon/logout.png" class="nav-icon"> Logout
-  </button>
-  <button class="nav-btn" onclick="showCalendar(); setActive(this)">
-    <img src="path_ke_ikon_kalender.png" alt="" style="width:20px; margin-right:10px;"> 
-    Kalender
-</button>
-</div>
-    </aside>
+  <div class="bottom">
+    <button class="logout" onclick="logout()">
+      <img src="icon/logout.png" class="nav-icon"> Logout
+    </button>
+    </div>
+</aside>
 
     <main>
 
