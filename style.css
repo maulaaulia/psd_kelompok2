@@ -386,28 +386,32 @@ input[type="date"] {
 }
 
 .login-container {
+  position: relative;
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   overflow: hidden;
 }
 
-/* background logo */
+/* LOGO KECIL DI KIRI */
 .login-container::before {
   content: "";
   position: absolute;
-  width: 400px;
-  height: 400px;
-  background: url("img/logo.png") no-repeat center;
+
+  width: 120px;   /* kecil */
+  height: 120px;  /* kecil */
+
+  background: url("./img/login.png") no-repeat center;
   background-size: contain;
 
-  opacity: 0.08; /* bikin samar */
-  z-index: 0;
+  opacity: 0.15;
 
+  left: 20px;   /* pinggir kiri */
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
+
+  z-index: 0;
+  pointer-events: none;
 }
