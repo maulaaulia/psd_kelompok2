@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Pastel Todo App</title>
 
-  <!-- FONT MODERN -->
+  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
@@ -12,40 +12,70 @@
 
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="center">
-  <div class="card">
-    <h2>🌸 Todo App</h2>
-    <p>Masukkan ID kamu</p>
-    <input type="text" id="userId" placeholder="User ID">
-    <button onclick="login()">Masuk</button>
-  </div>
-</div>
-
-<!-- MAIN APP -->
-<div id="app" class="hidden">
+<div id="app">
 
   <!-- SIDEBAR -->
   <aside>
-    <h3>✨ Menu</h3>
+    <h2 class="logo">🌸 Todo</h2>
 
-    <button onclick="showAdd()">➕ Tambah Tugas</button>
-    <button onclick="showTasks()">📋 Lihat Tugas</button>
-    <button onclick="deleteLast()">🗑️ Hapus Terakhir</button>
+    <nav>
+      <button class="nav-btn active">🏠 Dashboard</button>
+      <button class="nav-btn">📋 Tugas</button>
+      <button class="nav-btn">➕ Tambah</button>
+    </nav>
 
-    <hr style="margin:15px 0;">
-
-    <button onclick="logout()">🚪 Logout</button>
+    <div class="bottom">
+      <button class="logout">🚪 Logout</button>
+    </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
-    <div id="content"></div>
+
+    <!-- HEADER -->
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div class="user">👋 Hi, User</div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- CARD WELCOME -->
+      <div class="card big">
+        <h3>Selamat Datang ✨</h3>
+        <p>Mulai atur tugasmu hari ini dengan lebih rapi dan produktif.</p>
+      </div>
+
+      <!-- STATS -->
+      <div class="grid">
+        <div class="card">
+          <h4>📌 Total Tugas</h4>
+          <p class="number">0</p>
+        </div>
+
+        <div class="card">
+          <h4>✅ Selesai</h4>
+          <p class="number">0</p>
+        </div>
+
+        <div class="card">
+          <h4>⏳ Belum</h4>
+          <p class="number">0</p>
+        </div>
+      </div>
+
+      <!-- TASK PREVIEW -->
+      <div class="card">
+        <h3>Tugas Hari Ini</h3>
+        <div class="empty">Belum ada tugas 😴</div>
+      </div>
+
+    </div>
+
   </main>
 
 </div>
-
-<script src="script.js"></script>
 
 </body>
 </html>
