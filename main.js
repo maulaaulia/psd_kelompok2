@@ -280,3 +280,67 @@ function setActive(btn) {
 window.onload = () => {
   if (isDashboard && content) showHome();
 };
+// Tambahkan di bagian atas bersama data lainnya
+let history = JSON.parse(localStorage.getItem("todoHistory")) || [];
+
+// Modifikasi fungsi save() agar menyimpan history juga
+function save() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem("todoHistory", JSON.stringify(history));
+}
+
+// ================= VIEW: STATS & HISTORY (BARU) =================
+function showStats() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Statistik & Riwayat";
+  if (!content) return;
+
+  const totalCreated = todos.length + history.length;
+  const totalDone = todos.filter(t => t.done).length + history.filter(t => t.done).length;
+
+  content.innerHTML = `
+    <div class="card big">
+      <h3>📊 Statistik Penggunaan</h3>
+      <p>Laporan aktivitas tugas kamu selama ini.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h4>📝 Total Input</h4>
+        <div class="number">${totalCreated}</div>
+        <small>Semua tugas yang pernah dibuat</small>
+      </div>
+      <div class="card">
+        <h4>✅ Total Selesai</h4>
+        <div class="number" style="color: #a0c4ff;">${totalDone}</div>
+        <small>Tugas yang berhasil dikerjakan</small>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h3>📜 Riwayat (Tugas yang di-Pop)</h3>
+      <div style="margin-top: 15px;">
+        ${history.length === 0 
+          ? `<div class="empty">Belum ada riwayat penghapusan ✨</div>` 
+          : history.reverse().map(h => `
+            <div style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+              <span>${h.text}</span>
+              <small style="color: #999;">${h.done ? '✅ Selesai' : '❌ Belum Selesai'}</small>
+            </div>
+          `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// Modifikasi fungsi removeTodo agar menyimpan data ke history sebelum dihapus
+function removeTodo() {
+  if (todos.length === 0) return alert("Stack kosong!");
+  
+  const removed = todos.pop(); // Mengambil data teratas
+  history.push(removed); // Masukkan ke riwayat penggunaan
+  
+  alert("Pop Berhasil! Menghapus: " + removed.text);
+  save();
+  showTasks();
+}
