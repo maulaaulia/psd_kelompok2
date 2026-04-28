@@ -95,3 +95,8 @@ function save() {
 
 // default pertama
 showDashboard();
+
+function setActive(btn) {
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
