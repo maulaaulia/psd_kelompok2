@@ -1,19 +1,7 @@
-// ================= DATA & STATE =================
+// ================= CEK HALAMAN =================
 const isDashboard = window.location.pathname.includes("dashboard.html");
-const content = document.querySelector(".content");
-let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-function save() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-// ================= USER INFO =================
-const userName = document.getElementById("userName");
-if (userName) {
-  userName.innerText = "👋 Hi, " + (localStorage.getItem("user") || "User");
-}
-
-// ================= LOGIN & LOGOUT =================
+// ================= LOGIN =================
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -27,22 +15,36 @@ function login() {
   }
 }
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
+// ================= CEK LOGIN =================
+if (isDashboard) {
+  if (!localStorage.getItem("login")) {
+    window.location.href = "index.html";
+  }
 }
 
-// ================= VIEW: DASHBOARD =================
+// ================= USER NAME =================
+const userName = document.getElementById("userName");
+if (userName) {
+  userName.innerText = "👋 Hi, " + (localStorage.getItem("user") || "User");
+}
+
+// ================= DATA =================
+const content = document.querySelector(".content");
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+// ================= DASHBOARD =================
 function showDashboard() {
-  if (!content) return;
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Dashboard";
+
+  if (!content) return;
 
   content.innerHTML = `
     <div class="card big">
       <h3>Selamat Datang ✨</h3>
-      <p>Kelola tugas kuliahmu dengan sistem Stack (LIFO).</p>
+      <p>Mulai atur tugasmu hari ini dengan lebih rapi dan produktif.</p>
     </div>
+
     <div class="grid">
       <div class="card">
         <h4>📌 Total Tugas</h4>
@@ -52,85 +54,130 @@ function showDashboard() {
         <h4>✅ Selesai</h4>
         <div class="number">${todos.filter(t => t.done).length}</div>
       </div>
+      <div class="card">
+        <h4>⏳ Belum</h4>
+        <div class="number">${todos.filter(t => !t.done).length}</div>
+      </div>
     </div>
   `;
 }
 
-// ================= VIEW: TAMBAH TUGAS (PUSH) =================
-function showAdd() {
-  if (!content) return;
+// ================= TASK =================
+function showTasks() {
   const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tambah Tugas";
+  if (title) title.innerText = "Tugas";
+
+  if (!content) return;
 
   content.innerHTML = `
     <div class="card">
-      <h3>Tambah Tugas Baru</h3>
-      <input id="todoInput" placeholder="Ketik tugas di sini..." />
-      <button class="btn-login" onclick="addTodo()">Push ke Stack</button>
-    </div>
-  `;
-}
+      <h3>Daftar Tugas (STACK - LIFO)</h3>
 
-// ================= VIEW: DAFTAR TUGAS (LIFO DISPLAY) =================
-function showTasks() {
-  if (!content) return;
-  const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Daftar Tugas";
-
-  let html = `<div class="header">Tumpukan Tugas (Terbaru di Atas)</div>`;
-
-  if (todos.length === 0) {
-    html += `<div class="empty">Tumpukan kosong 😴</div>`;
+  if (tasks.length === 0) {
+    html += `<div class="empty">Tumpukan kosong, silakan tambah tugas ✨</div>`;
   } else {
-    // Membalik urutan (reverse) untuk simulasi Stack/LIFO di UI
-    [...todos].reverse().forEach((t, i) => {
-      const isTop = (i === 0) ? '<span class="badge">TOP</span>' : '';
+    // Tampilkan tugas, tapi TANPA tombol hapus di tiap barisnya
+    tasks.slice().reverse().forEach((t, i) => {
+      // Kita kasih tanda mana yang 'Top of Stack'
+      const isTop = (i === 0) ? '<span class="badge">TERATAS</span>' : '';
+      
       html += `
         <div class="task ${i === 0 ? 'top-task' : ''}">
-          <span>${t.text} ${isTop}</span>
+          <span>${t} ${isTop}</span>
         </div>
       `;
     });
   }
-  content.innerHTML = html;
+
+  document.getElementById("content").innerHTML = html;
 }
 
-// ================= CORE ACTIONS (STACK OPS) =================
+// FUNGSI SATU-SATUNYA UNTUK HAPUS (LIFO)
+function deleteLast() {
+  if (tasks.length > 0) {
+    // POP: Mengambil elemen terakhir yang masuk
+    const removed = tasks.pop(); 
+    alert(`Berhasil menyelesaikan tugas teratas: "${removed}"`);
+    showTasks();
+  } else {
+    alert("Gak ada tugas yang bisa dihapus, tumpukan kosong!");
+  }
+}
+    </div>
+  `;
+}
 
+
+// ================= ADD =================
+function showAdd() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tambah";
+
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="piano-bg"></div>
+
+    <div class="card">
+      <h3>Tambah Tugas</h3>
+      <input id="todoInput" placeholder="Tulis tugas..." />
+      <button class="btn-login" onclick="addTodo()">Tambah</button>
+    </div>
+  `;
+}
+
+// ================= ACTION =================
 function addTodo() {
   const input = document.getElementById("todoInput");
   if (!input || !input.value.trim()) return;
 
-  // PUSH: Menambah ke urutan terakhir array
-  todos.push({ text: input.value, done: false });
-  
-  save();
+  todos.push({
+    text: input.value,
+    done: false
+  });
+
   input.value = "";
-  alert("Tugas berhasil di-push!");
-  showTasks(); // Pindah ke list untuk lihat hasilnya
+  save();
+  showTasks();
 }
 
+function toggle(i) {
+  todos[i].done = !todos[i].done;
+  save();
+  showTasks();
+}
+
+// LIFO (STACK)
 function removeTodo() {
   if (todos.length === 0) {
-    alert("Stack Kosong!");
+    alert("Stack kosong!");
     return;
   }
 
-  // POP: Menghapus elemen paling terakhir (LIFO)
   const removed = todos.pop();
-  alert("Pop Berhasil! Tugas diselesaikan: " + removed.text);
+  alert("Menghapus tugas terakhir: " + removed.text);
 
   save();
-  // Refresh tampilan tergantung halaman aktif
-  const title = document.getElementById("pageTitle");
-  if (title && title.innerText === "Daftar Tugas") {
-    showTasks();
-  } else {
-    showDashboard();
-  }
+  showTasks();
 }
 
-// ================= LOAD AWAL =================
+function save() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+// ================= LOGOUT =================
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+// ================= ACTIVE MENU =================
+function setActive(btn) {
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+// ================= DEFAULT LOAD =================
 if (isDashboard && content) {
   showDashboard();
 }
