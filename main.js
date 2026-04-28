@@ -136,8 +136,9 @@ function setActive(btn) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
-
-// ================= DEFAULT =================
-if (content) {
-  showDashboard();
+function keluar() {
+  if (confirm("Yakin mau keluar?")) {
+    localStorage.removeItem("todos");
+    location.reload();
+  }
 }
