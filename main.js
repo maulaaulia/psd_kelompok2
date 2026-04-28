@@ -36,37 +36,42 @@ function save() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// ================= VIEW: HOME =================
+// ================= VIEW: HOME (TAMPILAN LOGIN STYLE) =================
 function showHome() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Home";
-
   if (!content) return;
 
   const lastTask = todos.length > 0 ? todos[todos.length - 1] : null;
 
   content.innerHTML = `
-    <div class="card home-card">
-
-      <div class="home-header">
-        <img src="img/logo.png" class="home-logo">
-        <div>
-          <h3>Selamat Datang ✨</h3>
-          <p>Kelola tugasmu dengan lebih rapi dan santai</p>
+    <div class="card big" style="text-align: center; padding: 40px 20px;">
+      <img src="icon/home.png" style="width: 80px; margin-bottom: 20px;">
+      <h2 style="color: #444;">Selamat Datang Kembali! ✨</h2>
+      <p style="color: #777; margin-bottom: 30px;">Siap untuk menyelesaikan tugasmu hari ini dengan sistem LIFO?</p>
+      
+      <div class="grid" style="margin-top: 20px;">
+        <div class="card" style="background: #fdfdfd; cursor: pointer;" onclick="showTasks()">
+          <h4>📂 Lihat Tugas</h4>
+          <p style="font-size: 12px;">Cek tumpukan tugasmu</p>
+        </div>
+        <div class="card" style="background: #fdfdfd; cursor: pointer;" onclick="showAdd()">
+          <h4>➕ Tambah Baru</h4>
+          <p style="font-size: 12px;">Push tugas ke stack</p>
         </div>
       </div>
 
       ${
         lastTask
           ? `
-          <button class="last-task" onclick="showTasks()">
-            <h4>📌 Tugas Terakhir</h4>
-            <p>${lastTask.text}</p>
-          </button>
+          <div style="margin-top: 30px; padding: 20px; border-top: 2px dashed #eee;">
+            <p style="font-size: 14px; font-weight: bold; color: #bdb2ff;">📌 TUGAS TERAKHIR DI STACK:</p>
+            <h3 style="margin: 10px 0;">${lastTask.text}</h3>
+            <small>⏰ Deadline: ${lastTask.deadline}</small>
+          </div>
           `
-          : `<div class="empty">Belum ada tugas 🥱</div>`
+          : `<div class="empty" style="margin-top: 20px;">Belum ada tugas di tumpukan 🥱</div>`
       }
-
     </div>
   `;
 }
@@ -84,8 +89,8 @@ function showDashboard() {
 
   content.innerHTML = `
     <div class="card big">
-      <h3>Selamat Datang ✨</h3>
-      <p>Kelola tugasmu dengan sistem Stack (LIFO). Tugas terbaru selalu berada di puncak tumpukan!</p>
+      <h3>Statistik Tugas ✨</h3>
+      <p>Pantau progres tumpukan tugasmu di sini.</p>
     </div>
 
     <div class="grid">
@@ -146,7 +151,7 @@ function showTasks() {
                 ${t.text} ${isTop}
               </span>
             </div>
-            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline || 'Tanpa Deadline'}</small>
+            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline}</small>
           </div>
         </div>
       `;
@@ -160,32 +165,30 @@ function showTasks() {
 // ================= VIEW: TAMBAH (PUSH) =================
 function showAdd() {
   const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tambah";
-
+  if (title) title.innerText = "Tambah Tugas";
   if (!content) return;
 
   content.innerHTML = `
     <div class="card add-modern">
       <h3>✨ Tambah Tugas Baru</h3>
-
-      <div class="form-group">
-        <label>Judul Tugas</label>
-        <input id="todoInput" placeholder="Contoh: Belajar Stack..." />
+      <div class="form-group" style="margin-top: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: bold;">Judul Tugas</label>
+        <input id="todoInput" placeholder="Contoh: Belajar Stack..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
       </div>
 
-      <div class="form-group">
-        <label>Tanggal</label>
-        <input type="date" id="todoDate" />
+      <div class="form-group" style="margin-top: 15px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: bold;">Tanggal Deadline</label>
+        <input type="date" id="deadlineInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
       </div>
 
-      <button class="btn-login full" onclick="addTodo()">
-        ➕ Tambahkan
+      <button class="nav-btn" onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold;">
+        ➕ Tambahkan ke Stack
       </button>
     </div>
   `;
 }
 
-// ================= VIEW: CALENDAR (BARU) =================
+// ================= VIEW: CALENDAR =================
 function showCalendar() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Calendar & Deadline";
@@ -227,34 +230,33 @@ function showCalendar() {
   content.innerHTML = html;
 }
 
-
 // ================= CORE ACTIONS =================
 function addTodo() {
   const input = document.getElementById("todoInput");
-  const dateInput = document.getElementById("deadlineInput");
+  const dateInput = document.getElementById("deadlineInput"); // Sudah sama dengan ID di HTML
 
   if (!input || !input.value.trim()) return;
 
+  // Pastikan ada nilai deadline, jika kosong beri default
+  const deadlineValue = dateInput.value || "Tanpa Deadline";
+
   todos.push({
     text: input.value.trim(),
-    deadline: dateInput ? dateInput.value : "Tanpa Deadline",
+    deadline: deadlineValue,
     done: false
   });
 
   input.value = "";
-
   if (dateInput) dateInput.value = "";
 
   save();
-  showTasks();
+  showTasks(); // Langsung pindah ke halaman tugas setelah tambah
 }
 
 function removeTodo() {
   if (todos.length === 0) return alert("Stack kosong!");
-  
   const removed = todos.pop();
   alert("Pop Berhasil! Menghapus: " + removed.text);
-  
   save();
   showTasks();
 }
