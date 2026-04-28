@@ -36,13 +36,55 @@ function save() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// ================= VIEW: DASHBOARD (DENGAN STATISTIK) =================
+// ================= VIEW: HOME =================
+function showHome() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Home";
+  if (!content) return;
+
+  let latest = todos[todos.length - 1];
+
+  content.innerHTML = `
+    <div class="card">
+      <h3>Tugas Terakhir</h3>
+      ${
+        todos.length === 0
+          ? `<div class="empty">Belum ada tugas 🥱</div>`
+          : `
+            <button onclick="showTasks()" style="
+              width:100%;
+              padding:20px;
+              border:none;
+              border-radius:15px;
+              background:rgba(255,255,255,0.7);
+              cursor:pointer;
+              text-align:left;
+              transition:0.3s;
+            " onmouseover="this.style.transform='scale(1.02)'" 
+              onmouseout="this.style.transform='scale(1)'">
+
+              <div style="font-size:16px; font-weight:600;">
+                ${latest.text}
+              </div>
+              <div style="font-size:12px; color:#bdb2ff; margin-top:5px; font-weight:bold;">
+                ⏰ Deadline: ${latest.deadline || 'Tanpa Deadline'}
+              </div>
+              <div style="font-size:12px; color:#888; margin-top:5px;">
+                Klik untuk lihat semua tugas
+              </div>
+            </button>
+          `
+      }
+    </div>
+  `;
+}
+
+// ================= VIEW: DASHBOARD (STATISTIK) =================
 function showDashboard() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Dashboard";
   if (!content) return;
 
-  // Hitung Data untuk Statistik
   const total = todos.length;
   const doneCount = todos.filter(t => t.done).length;
   const pendingCount = total - doneCount;
@@ -76,14 +118,11 @@ function showDashboard() {
           ${progressPercent}%
         </div>
       </div>
-      <p style="font-size: 13px; color: #777;">
-        Kamu telah menyelesaikan <b>${doneCount}</b> dari <b>${total}</b> tugas yang ada dalam memori.
-      </p>
     </div>
   `;
 }
 
-// ================= VIEW: TASK (LIFO DISPLAY) =================
+// ================= VIEW: TASK (DENGAN TAMPILAN BARU) =================
 function showTasks() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Daftar Tugas";
@@ -100,7 +139,7 @@ function showTasks() {
   `;
 
   if (todos.length === 0) {
-    html += `<div class="empty">Tumpukan kosong, silakan tambah tugas ✨</div>`;
+    html += `<div class="empty">Tumpukan kosong ✨</div>`;
   } else {
     // [...todos].reverse() membuat data terbaru muncul paling atas secara visual
     [...todos].reverse().forEach((t, i) => {
@@ -108,12 +147,16 @@ function showTasks() {
       const isTop = (i === 0) ? '<span class="badge" style="background:#a0c4ff; color:white; padding:2px 8px; border-radius:10px; font-size:10px; margin-left:10px;">TOP</span>' : '';
       
       html += `
-        <div class="task ${i === 0 ? 'top-task' : ''}" style="border-bottom:1px solid #eee; padding:15px 0; display:flex; justify-content:space-between; align-items: center;">
-          <div style="display: flex; align-items: center;">
-            <input type="checkbox" ${t.done ? 'checked' : ''} onclick="toggleStatus(${originalIndex})" style="margin-right: 12px; transform: scale(1.2); cursor: pointer;">
-            <span style="font-size: 15px; ${t.done ? 'text-decoration: line-through; color: #bbb;' : ''}">${t.text} ${isTop}</span>
+        <div class="task" style="border-bottom:1px solid #eee; padding:15px 0;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display: flex; align-items: center;">
+              <input type="checkbox" ${t.done ? 'checked' : ''} onclick="toggleStatus(${originalIndex})" style="margin-right: 12px; transform: scale(1.2); cursor: pointer;">
+              <span style="font-size: 15px; ${t.done ? 'text-decoration: line-through; color: #bbb;' : ''}">
+                ${t.text} ${isTop}
+              </span>
+            </div>
+            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline || 'No Date'}</small>
           </div>
-          <small style="color:#ccc;">#${originalIndex}</small>
         </div>
       `;
     });
@@ -123,122 +166,107 @@ function showTasks() {
   content.innerHTML = html;
 }
 
-// ================= VIEW: TAMBAH (PUSH PAGE) =================
+// ================= VIEW: TAMBAH (PUSH) =================
 function showAdd() {
   const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tambah";
+  if (title) title.innerText = "Tambah Tugas & Deadline";
   if (!content) return;
 
   content.innerHTML = `
     <div class="card">
       <h3>Push ke Stack</h3>
-      <p style="color: #888; font-size: 13px;">Tugas yang kamu masukkan akan menjadi tumpukan teratas.</p>
-      <input id="todoInput" placeholder="Tulis tugas baru..." style="width: 100%; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #ddd;" />
-      <button class="btn-login" onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">
+      <input id="todoInput" placeholder="Tulis tugas baru..." style="width: 100%; padding: 12px; margin-top: 15px; border-radius: 10px; border: 1px solid #ddd;" />
+      <p style="margin-top: 15px; font-size: 13px; font-weight: bold;">📅 Atur Deadline:</p>
+      <input type="date" id="deadlineInput" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd;" />
+      <button onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">
         Tambahkan (Push)
       </button>
     </div>
   `;
 }
 
-// ================= CORE ACTION (LOGIKA STACK) =================
+// ================= VIEW: CALENDAR =================
+function showCalendar() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Calendar & Deadline";
+  if (!content) return;
 
+  const sortedTasks = todos
+    .filter(t => t.deadline && t.deadline !== "Tanpa Deadline" && !t.done)
+    .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+  let html = `
+    <div class="card">
+      <h3>📅 Pengingat Deadline</h3>
+      <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Tugas diurutkan dari yang paling mendesak.</p>
+  `;
+
+  if (sortedTasks.length === 0) {
+    html += `<div class="empty">Tidak ada deadline aktif ✨</div>`;
+  } else {
+    sortedTasks.forEach(t => {
+      const diffTime = new Date(t.deadline) - new Date();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const statusColor = diffDays <= 2 ? "#ffadad" : "#a0c4ff";
+
+      html += `
+        <div style="border-left: 5px solid ${statusColor}; background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 0 10px 10px 0;">
+          <div style="display: flex; justify-content: space-between;">
+            <strong>${t.text}</strong>
+            <span style="color: ${statusColor}; font-weight: bold;">${diffDays < 0 ? 'Terlewat' : diffDays + ' Hari lagi'}</span>
+          </div>
+          <small>Deadline: ${t.deadline}</small>
+        </div>
+      `;
+    });
+  }
+
+  html += `</div>`;
+  content.innerHTML = html;
+}
+
+// ================= CORE ACTIONS =================
 function addTodo() {
   const input = document.getElementById("todoInput");
-  if (!input || !input.value.trim()) {
-    alert("Isi tugas dulu ya!");
-    return;
-  }
+  const dateInput = document.getElementById("deadlineInput");
+  if (!input || !input.value.trim()) return;
 
   todos.push({
     text: input.value.trim(),
+    deadline: dateInput.value || "Tanpa Deadline",
     done: false
   });
 
   input.value = "";
+  if(dateInput) dateInput.value = "";
   save();
   showTasks(); 
 }
 
 function removeTodo() {
-  if (todos.length === 0) {
-    alert("Stack kosong! Tidak ada tugas yang bisa dihapus.");
-    return;
-  }
-
+  if (todos.length === 0) return alert("Stack kosong!");
   const removed = todos.pop();
-  alert("Pop Berhasil! Menghapus tugas teratas: " + removed.text);
-
+  alert("Pop Berhasil! Menghapus: " + removed.text);
   save();
   showTasks();
 }
 
-// Fitur Tambahan: Mengubah status selesai/belum
 function toggleStatus(index) {
   todos[index].done = !todos[index].done;
   save();
   showTasks();
 }
 
-// ================= LOGOUT =================
 function logout() {
   localStorage.clear();
   window.location.href = "index.html";
 }
 
-// ================= MENU NAVIGATION =================
 function setActive(btn) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-// ================= LOAD DEFAULT =================
 window.onload = () => {
-  if (isDashboard && content) {
-    showHome(); // sekarang default ke HOME
-  }
+  if (isDashboard && content) showHome();
 };
-
-// ================= HOME =================
-function showHome() {
-  const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Home";
-
-  if (!content) return;
-
-  let latest = todos[todos.length - 1];
-
-  content.innerHTML = `
-    <div class="card">
-      <h3>Tugas Terakhir</h3>
-
-      ${
-        todos.length === 0
-          ? `<div class="empty">Belum ada tugas 🥱</div>`
-          : `
-            <button onclick="showTasks()" style="
-              width:100%;
-              padding:20px;
-              border:none;
-              border-radius:15px;
-              background:rgba(255,255,255,0.7);
-              cursor:pointer;
-              text-align:left;
-              transition:0.3s;
-            " onmouseover="this.style.transform='scale(1.02)'" 
-              onmouseout="this.style.transform='scale(1)'">
-
-              <div style="font-size:16px; font-weight:600;">
-                ${latest.text}
-              </div>
-
-              <div style="font-size:12px; color:#888; margin-top:5px;">
-                Klik untuk lihat semua tugas
-              </div>
-
-            </button>
-          `
-      }
-    </div>
-  `;
-}
