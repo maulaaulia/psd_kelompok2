@@ -178,10 +178,10 @@ function showAdd() {
 
       <div class="form-group" style="margin-top: 15px;">
         <label style="display: block; margin-bottom: 8px; font-weight: bold;">Tanggal Deadline</label>
-        <input type="date" id="deadlineInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
+        <input type="date" id="deadlineInput" style="width: 90%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
       </div>
 
-      <button class="nav-btn" onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold;">
+      <button class="nav-btn" onclick="addTodo()" style="width: 90%; background: #bdb2ff; color: white; border: none; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold;">
         ➕ Tambahkan ke Stack
       </button>
     </div>
