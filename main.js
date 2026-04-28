@@ -36,27 +36,24 @@ function save() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// ================= HOME =================
+// ================= VIEW: HOME =================
 function showHome() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Home";
-
   if (!content) return;
 
-  // ambil tugas terakhir (top stack)
   const last = todos[todos.length - 1];
 
   content.innerHTML = `
     <div class="card">
       <h3>🏠 Home</h3>
-
       ${
         !last
           ? `<div class="empty">Belum ada tugas ✨</div>`
           : `
-            <button class="task-row" onclick="showTasks()" style="width:100%; text-align:left;">
+            <button class="task-row" onclick="showTasks()" style="width:100%; text-align:left; border:none; background:none; cursor:pointer;">
               <div class="task-text">
-                <b>Tugas Terakhir</b><br>
+                <b>Tugas Terakhir (Top Stack)</b><br>
                 ${last.text}
               </div>
             </button>
@@ -109,7 +106,7 @@ function showDashboard() {
   `;
 }
 
-// ================= VIEW: TASK (DENGAN TAMPILAN DEADLINE) =================
+// ================= VIEW: TASK (LIFO) =================
 function showTasks() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Daftar Tugas";
@@ -171,15 +168,12 @@ function showAdd() {
   `;
 }
 
-// ================= VIEW: CALENDAR =================
+// ================= VIEW: CALENDAR (BARU) =================
 function showCalendar() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Calendar & Deadline";
-  
-  // Pastikan variabel 'content' sudah didefinisikan di awal file
   if (!content) return; 
 
-  // Filter tugas yang punya deadline dan belum selesai
   const sortedTasks = todos
     .filter(t => t.deadline && t.deadline !== "Tanpa Deadline" && !t.done)
     .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
