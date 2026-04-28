@@ -83,8 +83,8 @@ function toggle(i) {
   showTasks();
 }
 
-function removeTodo(i) {
-  todos.splice(i, 1);
+function removeTodo() {
+  todos.pop();
   save();
   showTasks();
 }
