@@ -1,11 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>Pastel Todo App</title>
+
+  <!-- FONT MODERN -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="center">
+  <div class="card">
+    <h2>🌸 Todo App</h2>
+    <p>Masukkan ID kamu</p>
+    <input type="text" id="userId" placeholder="User ID">
+    <button onclick="login()">Masuk</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="hidden">
+
+  <!-- SIDEBAR -->
+  <aside>
+    <h3>✨ Menu</h3>
+
+    <button onclick="showAdd()">➕ Tambah Tugas</button>
+    <button onclick="showTasks()">📋 Lihat Tugas</button>
+    <button onclick="deleteLast()">🗑️ Hapus Terakhir</button>
+
+    <hr style="margin:15px 0;">
+
+    <button onclick="logout()">🚪 Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <div id="content"></div>
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
