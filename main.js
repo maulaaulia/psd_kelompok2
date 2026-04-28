@@ -67,13 +67,13 @@ function showTasks() {
         todos.length === 0
           ? `<div class="empty">Belum ada tugas 🥱</div>`
           : todos.map((t, i) => `
-            <div style="display:flex; justify-content:space-between; margin:10px 0;">
-              <span style="text-decoration:${t.done ? 'line-through' : 'none'}">
+            <div class="task-item">
+              <span class="${t.done ? 'done' : ''}">
                 ${t.text}
               </span>
-              <div>
-                <button onclick="toggle(${i})">✔</button>
-                <button onclick="removeTodo(${i})">❌</button>
+              <div class="task-actions">
+                <button class="btn-done" onclick="toggle(${i})">✔</button>
+                <button class="btn-delete" onclick="removeTodo(${i})">✖</button>
               </div>
             </div>
           `).join("")
@@ -87,10 +87,12 @@ function showAdd() {
   document.getElementById("pageTitle").innerText = "Tambah";
 
   content.innerHTML = `
+    <div class="piano-bg"></div>
+
     <div class="card">
       <h3>Tambah Tugas</h3>
       <input id="todoInput" placeholder="Tulis tugas..." />
-      <button onclick="addTodo()">Tambah</button>
+      <button class="btn-login" onclick="addTodo()">Tambah</button>
     </div>
   `;
 }
