@@ -58,15 +58,17 @@ function showDashboard() {
 
 // ================= TASK =================
 function showTasks() {
-  document.getElementById("pageTitle").innerText = "Tugas";
+  const reversed = todos.slice().reverse();
 
   content.innerHTML = `
     <div class="card">
-      <h3>Daftar Tugas</h3>
+      <h3>Daftar Tugas (STACK - LIFO)</h3>
+
       ${
         todos.length === 0
           ? `<div class="empty">Belum ada tugas 🥱</div>`
           : todos.map((t, i) => `
+<<<<<<< HEAD
             <div class="task-row">
               <span class="task-text ${t.done ? 'done' : ''}">
                 ${t.text}
@@ -74,9 +76,22 @@ function showTasks() {
 
               <button class="icon-btn done-btn" onclick="toggle(${i})">✔</button>
               <button class="icon-btn delete-btn" onclick="removeTodo(${i})">✖</button>
+=======
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+              <span style="text-decoration:${t.done ? 'line-through' : 'none'}">
+                ${t.text}
+              </span>
+              <div>
+                <button onclick="toggle(${i})">✔</button>
+                <button onclick="removeTodo(${i})">❌</button>
+              </div>
+>>>>>>> f034fc5c459eed5e99146a72d5ae6e90686e4705
             </div>
           `).join("")
       }
+    </div>
+  `;
+}
     </div>
   `;
 }
