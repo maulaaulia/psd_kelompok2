@@ -198,3 +198,33 @@ window.onload = () => {
     showDashboard();
   }
 };
+
+// ================= HOME =================
+function showHome() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Home";
+
+  if (!content) return;
+
+  // ambil tugas terakhir (LIFO)
+  const last = todos[todos.length - 1];
+
+  content.innerHTML = `
+    <div class="card">
+      <h3>Tugas Terakhir</h3>
+
+      ${
+        !last
+          ? `<div class="empty">Belum ada tugas 😴</div>`
+          : `
+            <button class="task-row" onclick="showTasks()">
+              <span class="task-text ${last.done ? 'done' : ''}">
+                <b>${last.text}</b><br>
+                <small>${last.done ? 'Selesai' : 'Belum selesai'}</small>
+              </span>
+            </button>
+          `
+      }
+    </div>
+  `;
+}
