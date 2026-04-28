@@ -63,44 +63,36 @@ function showDashboard() {
 }
 
 // ================= TASK =================
-// MODIFIKASI FUNGSI TAMPIL TUGAS
 function showTasks() {
-  let html = `<div class="header">Daftar Tugas (Stack)</div>`;
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tugas";
 
-  if (tasks.length === 0) {
-    html += `<div class="empty">Tumpukan kosong, silakan tambah tugas ✨</div>`;
-  } else {
-    // Tampilkan tugas, tapi TANPA tombol hapus di tiap barisnya
-    tasks.slice().reverse().forEach((t, i) => {
-      // Kita kasih tanda mana yang 'Top of Stack'
-      const isTop = (i === 0) ? '<span class="badge">TERATAS</span>' : '';
-      
-      html += `
-        <div class="task ${i === 0 ? 'top-task' : ''}">
-          <span>${t} ${isTop}</span>
-        </div>
-      `;
-    });
-  }
+  if (!content) return;
 
-  document.getElementById("content").innerHTML = html;
-}
+  content.innerHTML = `
+    <div class="card">
+      <h3>Daftar Tugas (STACK - LIFO)</h3>
 
-// FUNGSI SATU-SATUNYA UNTUK HAPUS (LIFO)
-function deleteLast() {
-  if (tasks.length > 0) {
-    // POP: Mengambil elemen terakhir yang masuk
-    const removed = tasks.pop(); 
-    alert(`Berhasil menyelesaikan tugas teratas: "${removed}"`);
-    showTasks();
-  } else {
-    alert("Gak ada tugas yang bisa dihapus, tumpukan kosong!");
-  }
-}
+      ${
+        todos.length === 0
+          ? `<div class="empty">Belum ada tugas 🥱</div>`
+          : todos
+              .map((t, i) => `
+                <div class="task-row">
+                  <span class="task-text ${t.done ? 'done' : ''}">
+                    ${t.text}
+                  </span>
+
+                  <button class="icon-btn done-btn" onclick="toggle(${i})">✔</button>
+                  <button class="icon-btn delete-btn" onclick="removeTodo()">✖</button>
+                </div>
+              `)
+              .reverse()
+              .join("")
+      }
     </div>
   `;
 }
-
 
 // ================= ADD =================
 function showAdd() {
@@ -136,14 +128,12 @@ function addTodo() {
 }
 
 function toggle(i) {
-  if (i < 0 || i >= todos.length) return;
-
   todos[i].done = !todos[i].done;
   save();
   showTasks();
 }
 
-// LIFO DELETE (STACK)
+// LIFO (STACK)
 function removeTodo() {
   if (todos.length === 0) {
     alert("Stack kosong!");
