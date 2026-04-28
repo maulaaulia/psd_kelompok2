@@ -1,3 +1,6 @@
+// ================= CEK HALAMAN =================
+const isDashboard = window.location.pathname.includes("dashboard.html");
+
 // ================= LOGIN =================
 function login() {
   const user = document.getElementById("username").value;
@@ -13,7 +16,7 @@ function login() {
 }
 
 // ================= CEK LOGIN =================
-if (window.location.pathname.includes("dashboard.html")) {
+if (isDashboard) {
   if (!localStorage.getItem("login")) {
     window.location.href = "index.html";
   }
@@ -31,7 +34,10 @@ let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 // ================= DASHBOARD =================
 function showDashboard() {
-  document.getElementById("pageTitle").innerText = "Dashboard";
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Dashboard";
+
+  if (!content) return;
 
   content.innerHTML = `
     <div class="card big">
@@ -58,7 +64,10 @@ function showDashboard() {
 
 // ================= TASK =================
 function showTasks() {
-  const reversed = todos.slice().reverse();
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tugas";
+
+  if (!content) return;
 
   content.innerHTML = `
     <div class="card">
@@ -68,26 +77,29 @@ function showTasks() {
         todos.length === 0
           ? `<div class="empty">Belum ada tugas 🥱</div>`
           : todos.map((t, i) => `
-            <div style="display:flex; justify-content:space-between; margin:10px 0;">
-              <span style="text-decoration:${t.done ? 'line-through' : 'none'}">
+            <div class="task-row">
+              <span class="task-text ${t.done ? 'done' : ''}">
                 ${t.text}
               </span>
-              <div>
-                <button onclick="toggle(${i})">✔</button>
-                <button onclick="removeTodo(${i})">❌</button>
-              </div>
+
+              <button class="icon-btn done-btn" onclick="toggle(${i})">✔</button>
+              <button class="icon-btn delete-btn" onclick="removeTodo()">✖</button>
             </div>
           `).join("")
       }
     </div>
   `;
 }
-  
-
+    </div>
+  `;
+}
 
 // ================= ADD =================
 function showAdd() {
-  document.getElementById("pageTitle").innerText = "Tambah";
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tambah";
+
+  if (!content) return;
 
   content.innerHTML = `
     <div class="piano-bg"></div>
@@ -103,23 +115,36 @@ function showAdd() {
 // ================= ACTION =================
 function addTodo() {
   const input = document.getElementById("todoInput");
-  if (!input.value.trim()) return;
+  if (!input || !input.value.trim()) return;
 
-  todos.push({ text: input.value, done: false });
+  todos.push({
+    text: input.value,
+    done: false
+  });
+
   input.value = "";
-
   save();
   showTasks();
 }
 
 function toggle(i) {
+  if (i < 0 || i >= todos.length) return;
+
   todos[i].done = !todos[i].done;
   save();
   showTasks();
 }
 
+// LIFO DELETE (STACK)
 function removeTodo() {
-  todos.pop();
+  if (todos.length === 0) {
+    alert("Stack kosong!");
+    return;
+  }
+
+  const removed = todos.pop();
+  alert("Menghapus tugas terakhir: " + removed.text);
+
   save();
   showTasks();
 }
@@ -139,21 +164,8 @@ function setActive(btn) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
-function keluar() {
-  if (confirm("Yakin mau keluar?")) {
-    localStorage.removeItem("todos");
-    location.reload();
-  }
-}
-function popTodo() {
-  if (todos.length === 0) {
-    alert("Stack kosong!");
-    return;
-  }
 
-  let removed = todos.pop(); // LIFO
-  save();
-
-  alert("Menghapus tugas terakhir: " + removed.text);
-  showTasks();
+// ================= DEFAULT LOAD =================
+if (isDashboard && content) {
+  showDashboard();
 }
