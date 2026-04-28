@@ -269,3 +269,16 @@ button {
   from { transform: translateY(-30%); }
   to { transform: translateY(30%); }
 }
+
+/* ICON SIDEBAR */
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}

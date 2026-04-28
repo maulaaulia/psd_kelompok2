@@ -16,19 +16,33 @@
     <aside>
       <h2 class="logo">🌸 Todo</h2>
 
-      <nav>
-        <button class="nav-btn active" onclick="setActive(this); showHome()">🏠 Home</button>
-        <button class="nav-btn" onclick="setActive(this); showDashboard()">📊 Dashboard</button>
-        <button class="nav-btn" onclick="setActive(this); showTasks()">📋 Tugas</button>
-        <button class="nav-btn" onclick="setActive(this); showAdd()">➕ Tambah</button>
-        <button class="nav-btn" onclick="showCalendar(); setActive(this)">
-          📅 Calendar
-        </button>
-      </nav>
+    <nav>
+  <button class="nav-btn active" onclick="setActive(this); showDashboard()">
+    <img src="icon/home.png" class="nav-icon"> Home
+  </button>
 
-      <div class="bottom">
-        <button class="logout" onclick="logout()">🚪 Logout</button>
-      </div>
+  <button class="nav-btn" onclick="setActive(this); showDashboard()">
+    <img src="icon/dashboard.png" class="nav-icon"> Dashboard
+  </button>
+
+  <button class="nav-btn" onclick="setActive(this); showTasks()">
+    <img src="icon/task.png" class="nav-icon"> Tugas
+  </button>
+
+  <button class="nav-btn" onclick="setActive(this); showAdd()">
+    <img src="icon/tambah.png" class="nav-icon"> Tambah
+  </button>
+
+  <button class="nav-btn">
+    <img src="icon/calendar.png" class="nav-icon"> Kalender
+  </button>
+</nav>
+
+<div class="bottom">
+  <button class="logout" onclick="logout()">
+    <img src="icon/logout.png" class="nav-icon"> Logout
+  </button>
+</div>
     </aside>
 
     <main>
