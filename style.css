@@ -4,13 +4,21 @@ body {
   background: linear-gradient(135deg, #ffd6e0, #d6f0ff);
 }
 
-/* LAYOUT */
+/* ================= LOGIN ================= */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* ================= LAYOUT ================= */
 #app {
   display: flex;
   height: 100vh;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
 aside {
   width: 230px;
   background: rgba(255, 200, 221, 0.85);
@@ -26,7 +34,7 @@ aside {
   margin-bottom: 30px;
 }
 
-/* NAV */
+/* ================= NAV ================= */
 nav {
   display: flex;
   flex-direction: column;
@@ -51,7 +59,7 @@ nav {
   background: linear-gradient(135deg, #89b4fa, #a0c4ff);
 }
 
-/* BOTTOM */
+/* ================= BOTTOM ================= */
 .bottom {
   margin-top: auto;
 }
@@ -63,15 +71,16 @@ nav {
   border: none;
   background: #ffadad;
   color: white;
+  cursor: pointer;
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
 main {
   flex: 1;
   padding: 25px;
 }
 
-/* TOPBAR */
+/* ================= TOPBAR ================= */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -89,12 +98,12 @@ main {
   font-size: 14px;
 }
 
-/* CONTENT */
+/* ================= CONTENT ================= */
 .content {
   margin-top: 20px;
 }
 
-/* CARD */
+/* ================= CARD ================= */
 .card {
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(10px);
@@ -108,23 +117,39 @@ main {
   font-size: 15px;
 }
 
-/* GRID */
+/* ================= GRID ================= */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 
-/* NUMBER */
+/* ================= NUMBER ================= */
 .number {
   font-size: 28px;
   font-weight: bold;
   margin-top: 10px;
 }
 
-/* EMPTY */
+/* ================= EMPTY ================= */
 .empty {
   text-align: center;
   color: #888;
   margin-top: 10px;
+}
+
+/* ================= INPUT ================= */
+input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: #f1f5ff;
+}
+
+/* ================= BUTTON GENERAL ================= */
+button {
+  cursor: pointer;
 }

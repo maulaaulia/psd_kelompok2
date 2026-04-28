@@ -2,80 +2,30 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pastel Todo App</title>
+  <title>Login</title>
 
-  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="center">
 
-<div id="app">
+<div class="login-container">
 
-  <!-- SIDEBAR -->
-  <aside>
-    <h2 class="logo">🌸 Todo</h2>
+  <div class="login-card">
+    <h2>🌸 Todo App</h2>
+    <p class="subtitle">Organize your tasks beautifully</p>
 
-    <nav>
-    <button class="nav-btn active" onclick="showDashboard()">🏠 Dashboard</button>
-    <button class="nav-btn" onclick="showTasks()">📋 Tugas</button>
-    <button class="nav-btn" onclick="showAdd()">➕ Tambah</button>
-    </nav>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
 
-    <div class="bottom">
-      <button class="logout">🚪 Logout</button>
-    </div>
-  </aside>
+    <button onclick="login()">Masuk</button>
 
-  <!-- MAIN -->
-  <main>
-
-    <!-- HEADER -->
-    <div class="topbar">
-      <h1>Dashboard</h1>
-      <div class="user">👋 Hi, User</div>
-    </div>
-
-    <!-- CONTENT -->
-    <div class="content">
-
-      <!-- CARD WELCOME -->
-      <div class="card big">
-        <h3>Selamat Datang ✨</h3>
-        <p>Mulai atur tugasmu hari ini dengan lebih rapi dan produktif.</p>
-      </div>
-
-      <!-- STATS -->
-      <div class="grid">
-        <div class="card">
-          <h4>📌 Total Tugas</h4>
-          <p class="number">0</p>
-        </div>
-
-        <div class="card">
-          <h4>✅ Selesai</h4>
-          <p class="number">0</p>
-        </div>
-
-        <div class="card">
-          <h4>⏳ Belum</h4>
-          <p class="number">0</p>
-        </div>
-      </div>
-
-      <!-- TASK PREVIEW -->
-      <div class="card">
-        <h3>Tugas Hari Ini</h3>
-        <div class="empty">Belum ada tugas 😴</div>
-      </div>
-<button class="nav-btn active" onclick="setActive(this); showDashboard()">🏠 Dashboard</button>
-    </div>
-
-  </main>
+  <p class="hint">Gunakan: <b>admin / 123</b></p>
+  </div>
 
 </div>
+
 <script src="main.js"></script>
 </body>
 </html>
