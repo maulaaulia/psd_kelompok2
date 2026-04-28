@@ -1,9 +1,38 @@
-const content = document.querySelector(".content");
+// ================= LOGIN =================
+function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
 
+  if (user === "admin" && pass === "123") {
+    localStorage.setItem("login", "true");
+    localStorage.setItem("user", user);
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Username / Password salah!");
+  }
+}
+
+// ================= CEK LOGIN =================
+if (window.location.pathname.includes("dashboard.html")) {
+  if (!localStorage.getItem("login")) {
+    window.location.href = "index.html";
+  }
+}
+
+// ================= USER NAME =================
+const userName = document.getElementById("userName");
+if (userName) {
+  userName.innerText = "👋 Hi, " + (localStorage.getItem("user") || "User");
+}
+
+// ================= DATA =================
+const content = document.querySelector(".content");
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 // ================= DASHBOARD =================
 function showDashboard() {
+  document.getElementById("pageTitle").innerText = "Dashboard";
+
   content.innerHTML = `
     <div class="card big">
       <h3>Selamat Datang ✨</h3>
@@ -27,8 +56,10 @@ function showDashboard() {
   `;
 }
 
-// ================= LIST TUGAS =================
+// ================= TASK =================
 function showTasks() {
+  document.getElementById("pageTitle").innerText = "Tugas";
+
   content.innerHTML = `
     <div class="card">
       <h3>Daftar Tugas</h3>
@@ -51,8 +82,10 @@ function showTasks() {
   `;
 }
 
-// ================= TAMBAH =================
+// ================= ADD =================
 function showAdd() {
+  document.getElementById("pageTitle").innerText = "Tambah";
+
   content.innerHTML = `
     <div class="card">
       <h3>Tambah Tugas</h3>
@@ -62,19 +95,16 @@ function showAdd() {
   `;
 }
 
-// ================= LOGIC =================
+// ================= ACTION =================
 function addTodo() {
   const input = document.getElementById("todoInput");
   if (!input.value.trim()) return;
 
-  todos.push({
-    text: input.value,
-    done: false
-  });
-
+  todos.push({ text: input.value, done: false });
   input.value = "";
+
   save();
-  showTasks(); // langsung pindah ke list
+  showTasks();
 }
 
 function toggle(i) {
@@ -93,10 +123,19 @@ function save() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// default pertama
-showDashboard();
+// ================= LOGOUT =================
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
 
+// ================= ACTIVE MENU =================
 function setActive(btn) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
+}
+
+// ================= DEFAULT =================
+if (content) {
+  showDashboard();
 }
