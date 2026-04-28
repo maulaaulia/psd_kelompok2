@@ -122,7 +122,7 @@ function showDashboard() {
   `;
 }
 
-// ================= VIEW: TASK (DENGAN TAMPILAN BARU) =================
+// ================= VIEW: TASK (DENGAN TAMPILAN DEADLINE) =================
 function showTasks() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Daftar Tugas";
@@ -141,7 +141,6 @@ function showTasks() {
   if (todos.length === 0) {
     html += `<div class="empty">Tumpukan kosong ✨</div>`;
   } else {
-    // [...todos].reverse() membuat data terbaru muncul paling atas secara visual
     [...todos].reverse().forEach((t, i) => {
       const originalIndex = todos.length - 1 - i;
       const isTop = (i === 0) ? '<span class="badge" style="background:#a0c4ff; color:white; padding:2px 8px; border-radius:10px; font-size:10px; margin-left:10px;">TOP</span>' : '';
@@ -155,7 +154,7 @@ function showTasks() {
                 ${t.text} ${isTop}
               </span>
             </div>
-            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline || 'No Date'}</small>
+            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline || 'Tanpa Deadline'}</small>
           </div>
         </div>
       `;
