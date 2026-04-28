@@ -52,11 +52,18 @@ nav {
 }
 
 .nav-btn:hover {
-  transform: scale(1.05);
+  transform: translateX(5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
 .nav-btn.active {
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  background: linear-gradient(135deg, #60a5fa, #93c5fd);
+  color: white;
+}
+
+.nav-btn span {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* ================= BOTTOM ================= */
@@ -274,11 +281,23 @@ button {
 .nav-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+
+  border: none;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+
+  background: white; /* ← ini yang bikin putih */
+  color: #333;
+
+  cursor: pointer;
+  transition: 0.3s;
 }
 
+/* ICON SIDEBAR */
 .nav-icon {
-  width: 18px;
-  height: 18px;
+  width: 26px;   /* sebelumnya 18px → dibesarin */
+  height: 26px;
   object-fit: contain;
 }
