@@ -286,39 +286,112 @@ button {
   background: #ffadad;
 }
 
-/* BACKGROUND ANIMATION */
+/* BACKGROUND PIANO HALUS */
 .piano-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  z-index: -1; /* penting: paling belakang */
   overflow: hidden;
+  pointer-events: none;
 }
 
-/* TILE */
+/* GARIS HALUS */
 .piano-bg::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.08) 0px,
+    rgba(255,255,255,0.08) 15px,
+    transparent 15px,
+    transparent 40px
+  );
+
+  animation: flow 8s linear infinite;
+}
+
+/* EFEK AIR */
+.piano-bg::after {
   content: "";
   position: absolute;
   width: 100%;
   height: 100%;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(255,255,255,0.3) 0px,
-    rgba(255,255,255,0.3) 20px,
-    transparent 20px,
-    transparent 40px
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.2),
+    rgba(255,255,255,0)
   );
-  animation: fall 6s linear infinite;
-  opacity: 0.4;
+
+  animation: fadeFlow 6s ease-in-out infinite;
 }
 
-@keyframes fall {
+/* ANIMASI GERAK */
+@keyframes flow {
   from {
-    transform: translateY(-100%);
+    transform: translateY(-50%);
   }
   to {
-    transform: translateY(100%);
+    transform: translateY(50%);
   }
+}
+
+/* ANIMASI FADE */
+@keyframes fadeFlow {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.05; }
+  100% { opacity: 0.2; }
+}
+
+/* TASK ROW */
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.7);
+}
+
+/* TEXT */
+.task-text {
+  flex: 1;
+}
+
+/* DONE */
+.done {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+/* ICON BUTTON */
+.icon-btn {
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+}
+
+/* DONE */
+.done-btn {
+  background: #caffbf;
+}
+
+/* DELETE */
+.delete-btn {
+  background: #ffadad;
 }

@@ -67,14 +67,13 @@ function showTasks() {
         todos.length === 0
           ? `<div class="empty">Belum ada tugas 🥱</div>`
           : todos.map((t, i) => `
-            <div class="task-item">
-              <span class="${t.done ? 'done' : ''}">
+            <div class="task-row">
+              <span class="task-text ${t.done ? 'done' : ''}">
                 ${t.text}
               </span>
-              <div class="task-actions">
-                <button class="btn-done" onclick="toggle(${i})">✔</button>
-                <button class="btn-delete" onclick="removeTodo(${i})">✖</button>
-              </div>
+
+              <button class="icon-btn done-btn" onclick="toggle(${i})">✔</button>
+              <button class="icon-btn delete-btn" onclick="removeTodo(${i})">✖</button>
             </div>
           `).join("")
       }
