@@ -97,9 +97,6 @@ function deleteLast() {
     alert("Gak ada tugas yang bisa dihapus, tumpukan kosong!");
   }
 }
-    </div>
-  `;
-}
 
 
 // ================= ADD =================
