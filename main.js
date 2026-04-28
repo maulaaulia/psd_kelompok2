@@ -40,25 +40,33 @@ function save() {
 function showHome() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Home";
+
   if (!content) return;
 
-  const last = todos[todos.length - 1];
+  const lastTask = todos.length > 0 ? todos[todos.length - 1] : null;
 
   content.innerHTML = `
-    <div class="card">
-      <h3>🏠 Home</h3>
+    <div class="card home-card">
+
+      <div class="home-header">
+        <img src="img/logo.png" class="home-logo">
+        <div>
+          <h3>Selamat Datang ✨</h3>
+          <p>Kelola tugasmu dengan lebih rapi dan santai</p>
+        </div>
+      </div>
+
       ${
-        !last
-          ? `<div class="empty">Belum ada tugas ✨</div>`
-          : `
-            <button class="task-row" onclick="showTasks()" style="width:100%; text-align:left; border:none; background:none; cursor:pointer;">
-              <div class="task-text">
-                <b>Tugas Terakhir (Top Stack)</b><br>
-                ${last.text}
-              </div>
-            </button>
+        lastTask
+          ? `
+          <button class="last-task" onclick="showTasks()">
+            <h4>📌 Tugas Terakhir</h4>
+            <p>${lastTask.text}</p>
+          </button>
           `
+          : `<div class="empty">Belum ada tugas 🥱</div>`
       }
+
     </div>
   `;
 }
@@ -152,17 +160,26 @@ function showTasks() {
 // ================= VIEW: TAMBAH (PUSH) =================
 function showAdd() {
   const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tambah Tugas & Deadline";
+  if (title) title.innerText = "Tambah";
+
   if (!content) return;
 
   content.innerHTML = `
-    <div class="card">
-      <h3>Push ke Stack</h3>
-      <input id="todoInput" placeholder="Tulis tugas baru..." style="width: 100%; padding: 12px; margin-top: 15px; border-radius: 10px; border: 1px solid #ddd;" />
-      <p style="margin-top: 15px; font-size: 13px; font-weight: bold;">📅 Atur Deadline:</p>
-      <input type="date" id="deadlineInput" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd;" />
-      <button onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">
-        Tambahkan (Push)
+    <div class="card add-modern">
+      <h3>✨ Tambah Tugas Baru</h3>
+
+      <div class="form-group">
+        <label>Judul Tugas</label>
+        <input id="todoInput" placeholder="Contoh: Belajar Stack..." />
+      </div>
+
+      <div class="form-group">
+        <label>Tanggal</label>
+        <input type="date" id="todoDate" />
+      </div>
+
+      <button class="btn-login full" onclick="addTodo()">
+        ➕ Tambahkan
       </button>
     </div>
   `;
