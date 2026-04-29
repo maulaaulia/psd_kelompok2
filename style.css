@@ -1118,3 +1118,104 @@ aside::after,
 .login-container::after {
   pointer-events: none !important;
 }
+
+/* =========================================
+   FINAL SAFE PATCH — NO BREAK, NO CHANGE
+   ========================================= */
+
+/* ===== FIX CLICK & LAYER (WAJIB) ===== */
+aside::before,
+aside::after,
+.card::before,
+.login-container::before,
+.login-container::after {
+  pointer-events: none !important;
+}
+
+aside,
+main,
+.card,
+.content,
+.grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* pastikan semua tombol & input aman diklik */
+button,
+.nav-btn,
+.logout,
+.icon-btn,
+.icon-btn-main,
+.btn-login,
+input {
+  position: relative;
+  z-index: 5;
+}
+
+/* ===== FIX INPUT ===== */
+input {
+  caret-color: white;
+}
+
+/* ===== FIX NAV BUTTON CONFLICT ===== */
+/* paksa pakai versi dark tanpa ubah tampilan lain */
+.nav-btn {
+  background: transparent !important;
+  color: #cbd5f5 !important;
+}
+
+/* ===== FIX CARD CONSISTENT ===== */
+.card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* ===== FIX GRID BIAR GA ANEH ===== */
+.grid {
+  align-items: stretch;
+}
+
+/* ===== FIX MAIN SPACING ===== */
+main {
+  margin-left: 260px;
+}
+
+/* ===== FIX MODAL CLICK ===== */
+.modal {
+  pointer-events: auto;
+}
+
+.modal-content {
+  pointer-events: auto;
+}
+
+/* ===== NEON ENHANCEMENT (TIDAK MERUBAH LAYOUT) ===== */
+
+/* glow halus sidebar */
+aside {
+  box-shadow:
+    0 0 20px rgba(99,102,241,0.25),
+    0 0 60px rgba(139,92,246,0.15),
+    10px 20px 40px rgba(0,0,0,0.5);
+}
+
+/* glow halus card */
+.card:hover {
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.4),
+    0 0 15px rgba(99,102,241,0.2),
+    0 0 30px rgba(139,92,246,0.15);
+}
+
+/* tombol lebih hidup dikit */
+.icon-btn-main:hover,
+.btn-login:hover,
+.logout:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== ANIMATION SMOOTH ===== */
+* {
+  transition: all 0.2s ease;
+}
