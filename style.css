@@ -873,3 +873,17 @@ main {
 .card.big {
   max-width: 900px;
 }
+
+/* ================= CENTER CONTENT ================= */
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* bisa diganti center kalau mau full tengah */
+  min-height: calc(100vh - 100px);
+}
+
+/* biar card ga melebar */
+.content .card.big {
+  width: 100%;
+  max-width: 800px; /* atur sesuai selera */
+}
