@@ -196,7 +196,6 @@ function showAdd() {
   `;
 }
 
-// ================= VIEW: CALENDAR =================
 function showCalendar() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Calendar & Deadline";
@@ -216,19 +215,44 @@ function showCalendar() {
     html += `<div class="empty">Tidak ada deadline aktif ✨</div>`;
   } else {
     sortedTasks.forEach(t => {
-      const diffTime = new Date(t.deadline) - new Date();
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      const statusColor = diffDays <= 2 ? "#ffadad" : "#a0c4ff";
+      const now = new Date();
+      const target = new Date(t.deadline);
+      const diffTime = target - now; // Hasil dalam milidetik
+
+      let timeText = "";
+      let statusColor = "#a0c4ff"; // Default Biru
+
+      if (diffTime < 0) {
+        // JIKA TERLEWAT
+        timeText = "Terlambat";
+        statusColor = "#ff4d4d"; // Merah tegas
+      } else {
+        // HITUNG HARI, JAM, MENIT
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (diffDays > 0) {
+          timeText = `${diffDays} Hari ${diffHours} Jam lagi`;
+        } else if (diffHours > 0) {
+          timeText = `${diffHours} Jam ${diffMinutes} Menit lagi`;
+        } else {
+          timeText = `${diffMinutes} Menit lagi`;
+        }
+
+        // Warna peringatan jika mepet (kurang dari 1 hari)
+        if (diffDays < 1) statusColor = "#ffadad"; 
+      }
 
       html += `
         <div style="border-left: 5px solid ${statusColor}; background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 0 10px 10px 0;">
           <div style="display: flex; justify-content: space-between;">
             <strong>${t.text}</strong>
             <span style="color: ${statusColor}; font-weight: bold;">
-              ${diffDays < 0 ? 'Terlewat' : diffDays + ' Hari lagi'}
+              ${timeText}
             </span>
           </div>
-          <small>Deadline: ${t.deadline}</small>
+          <small>Deadline: ${t.deadline.replace('T', ' ')}</small>
         </div>
       `;
     });
