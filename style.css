@@ -865,9 +865,33 @@ main {
   margin-left: 260px; /* kasih jarak dari sidebar */
   max-width: 1200px;  /* 🔥 biar ga terlalu lebar */
 }
+/* ================= FIX HOME CENTER ================= */
 body.home main {
+  margin-left: 260px; /* tetap kasih jarak sidebar */
   display: flex;
   justify-content: center;
+}
+
+body.home .content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+body.home .card.big {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+/* ================= DASHBOARD HEADER FULL WIDTH ================= */
+body.dashboard .card.big {
+  padding: 25px;
+}
+
+/* biar sejajar sama progress */
+body.dashboard .grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 .card {
