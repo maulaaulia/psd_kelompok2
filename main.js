@@ -366,7 +366,9 @@ function filterTasks() {
 function showPopup(title, desc) {
   document.getElementById("popupText").innerText = title;
   document.getElementById("popupDesc").innerText = desc;
-  document.getElementById("popupModal").style.display = "flex";
+
+  const modal = document.getElementById("popupModal");
+  modal.style.display = "flex"; // WAJIB FLEX biar center jalan
 }
 
 function closePopup() {
