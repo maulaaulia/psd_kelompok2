@@ -149,22 +149,22 @@ main {
 
 /* ================= INPUT ================= */
 input {
-  padding: 12px 15px; 
+  padding: 12px 15px;
   margin: 10px 0;
   width: 100%;
-  border-radius: 14px; 
-  border: 2px solid transparent; 
+  border-radius: 10px; /* Kembalikan ke 10px biar nggak nabrak container */
+  border: 1px solid transparent; /* Pakai border tipis saja */
   outline: none;
-  background: #f0f4f8;
+  background: #eef4ff; /* Balikin ke warna awal kamu */
   transition: 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box; /* PENTING: Biar padding nggak ngerusak lebar kotak */
 }
 
-/* Tambahkan efek focus ini tepat di bawahnya */
+/* Efek fokus yang aman, cuma main di warna border & shadow halus */
 input:focus {
-  background: white;
-  border: 2px solid #a0c4ff; 
-  box-shadow: 0 0 10px rgba(160, 196, 255, 0.2);
+  background: #ffffff;
+  border-color: #a0c4ff;
+  box-shadow: 0 0 8px rgba(160, 196, 255, 0.2);
 }
 
 /* ================= BUTTON GENERAL ================= */
