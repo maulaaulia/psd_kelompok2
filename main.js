@@ -331,6 +331,8 @@ function removeTodo() {
     "Pop Berhasil ✅",
     "Tugas " + removed.text + " dihapus dari stack."
 );
+save();
+showTasks();
 }
 
 function toggleStatus(index) {
@@ -507,5 +509,6 @@ function undoRemove() {
   showPopup(
     "Undo Berhasil ↩️",
     "Task berhasil dikembalikan."
+
   );
 }
