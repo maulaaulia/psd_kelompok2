@@ -125,15 +125,23 @@ function showTasks() {
   if (title) title.innerText = "Daftar Tugas";
   if (!content) return;
 
-  let html = `
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3>Tumpukan Tugas (LIFO)</h3>
-        <button onclick="removeTodo()" style="background: #ffadad; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">
-          🗑️ Pop Teratas
-        </button>
-      </div>
-  `;
+let html = `
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h3>Tumpukan Tugas (LIFO)</h3>
+      <button onclick="removeTodo()" style="background:#ffadad; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
+        🗑️ Pop Teratas
+      </button>
+    </div>
+
+    <input 
+      type="text" 
+      id="searchTask" 
+      placeholder="🔍 Cari tugas..." 
+      onkeyup="filterTasks()" 
+      style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;"
+    >
+`;
 
   if (todos.length === 0) {
     html += `<div class="empty">Tumpukan kosong ✨</div>`;
@@ -343,4 +351,24 @@ function removeTodo() {
   alert("Pop Berhasil! Menghapus: " + removed.text);
   save();
   showTasks();
+}
+
+function filterTasks() {
+  const keyword = document.getElementById("searchTask").value.toLowerCase();
+  const taskElements = document.querySelectorAll(".task");
+
+  taskElements.forEach(el => {
+    const text = el.innerText.toLowerCase();
+    el.style.display = text.includes(keyword) ? "block" : "none";
+  });
+}
+
+function showPopup(title, desc) {
+  document.getElementById("popupText").innerText = title;
+  document.getElementById("popupDesc").innerText = desc;
+  document.getElementById("popupModal").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popupModal").style.display = "none";
 }
