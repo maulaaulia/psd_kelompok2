@@ -395,26 +395,6 @@ input[type="date"] {
   overflow: hidden;
 }
 
-/* LOGO KECIL DI KIRI */
-.login-container::before {
-  content: "";
-  position: absolute;
-
-  width: 120px;   /* kecil */
-  height: 120px;  /* kecil */
-
-  background: url("./img/login.png") no-repeat center;
-  background-size: contain;
-
-  opacity: 0.15;
-
-  left: 20px;   /* pinggir kiri */
-  top: 50%;
-  transform: translateY(-50%);
-
-  z-index: 0;
-  pointer-events: none;
-}
 
 /* ================= MODAL POPUP ================= */
 .modal {
