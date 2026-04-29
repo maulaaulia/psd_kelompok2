@@ -556,13 +556,13 @@ input[type="date"] {
   content: "";
   position: absolute;
 
-  width: 350px; /* ukuran maskot */
-  height: 350px;
+  width: 410px; /* ukuran maskot */
+  height: 410px;
 
   background: url("./img/login.png") no-repeat center;
   background-size: contain;
 
-  right: 110px;
+  right: 105px;
   bottom: -20;
 
   opacity: 0.9;
