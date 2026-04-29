@@ -866,10 +866,13 @@ main {
   max-width: 1200px;  /* 🔥 biar ga terlalu lebar */
 }
 /* ================= FIX HOME CENTER ================= */
+/* ================= FIX HOME SUPER CENTER ================= */
 body.home main {
   margin-left: 260px; /* tetap kasih jarak sidebar */
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 body.home .content {
@@ -878,10 +881,14 @@ body.home .content {
   justify-content: center;
 }
 
+body.home .home-card,
 body.home .card.big {
   width: 100%;
   max-width: 850px;
   margin: 0 auto;
+}
+body.home #app {
+  justify-content: center;
 }
 
 /* ================= DASHBOARD HEADER FULL WIDTH ================= */
