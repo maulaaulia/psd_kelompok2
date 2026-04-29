@@ -147,24 +147,24 @@ main {
   margin-top: 10px;
 }
 
-/* ================= INPUT ================= */
+/* Update di bagian input */
 input {
-  padding: 12px 15px;
-  margin: 10px 0;
   width: 100%;
-  border-radius: 10px; /* Kembalikan ke 10px biar nggak nabrak container */
-  border: 1px solid transparent; /* Pakai border tipis saja */
-  outline: none;
-  background: #eef4ff; /* Balikin ke warna awal kamu */
-  transition: 0.3s ease;
-  box-sizing: border-box; /* PENTING: Biar padding nggak ngerusak lebar kotak */
+  padding: 12px 15px;
+  margin: 8px 0 15px 0; /* Jarak antar input dirapikan */
+  border-radius: 12px;
+  border: 1px solid #e2e8f0; /* Border tipis biar tegas tapi rapi */
+  background: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  box-sizing: border-box; /* WAJIB ada agar input tidak lewat batas */
+  transition: 0.2s;
 }
 
-/* Efek fokus yang aman, cuma main di warna border & shadow halus */
 input:focus {
-  background: #ffffff;
-  border-color: #a0c4ff;
-  box-shadow: 0 0 8px rgba(160, 196, 255, 0.2);
+  border-color: #60a5fa;
+  background: white;
+  outline: none;
 }
 
 /* ================= BUTTON GENERAL ================= */
@@ -180,15 +180,17 @@ button {
   align-items: center;
 }
 
+/* Update di bagian .login-card */
 .login-card {
-  position: relative;
-  z-index: 2;
-  background: rgba(255,255,255,0.7); /* Diterangkan sedikit */
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255,255,255,0.6);
-  /* Pakai shadow yang lebih ceria dan glowy */
-  box-shadow: 0 20px 50px rgba(147, 197, 253, 0.3), 
-  inset 0 0 15px rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.7); 
+  backdrop-filter: blur(20px);
+  padding: 40px 30px; /* Diperlebar sedikit biar nafas */
+  border-radius: 25px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-sizing: border-box; /* Menjaga ukuran tetap konsisten */
 }
 
 .subtitle {
@@ -198,25 +200,23 @@ button {
 }
 
 /* Update di bagian .btn-login */
+/* Update di bagian .btn-login */
 .btn-login {
   width: 100%;
   padding: 12px;
-  border-radius: 14px;
+  border-radius: 12px; /* Disamakan dengan input biar rapi */
   border: none;
-  /* Gradasi ceria (Peach ke Pink muda) */
-  background: linear-gradient(135deg, #ffb199 0%, #ff0844 100%); 
-  /* ATAU kalau mau tetap soft: */
-  /* background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); */
+  background: linear-gradient(135deg, #d3f3ff, #fffec7); /* Warna pink-merah ceriamu */
   color: white;
   font-weight: 600;
-  margin-top: 15px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transisi lebih mulus */
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* Update efek hover pada tombol */
 .btn-login:hover {
-  transform: translateY(-4px) scale(1.02); /* Tambah efek membesar sedikit */
-  box-shadow: 0 15px 25px rgba(255, 177, 153, 0.4); /* Shadow mengikuti warna tombol */
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .nav-btn:hover {
