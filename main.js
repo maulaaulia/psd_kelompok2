@@ -1,6 +1,12 @@
 // ================= CEK HALAMAN =================
 const isDashboard = window.location.pathname.includes("dashboard.html");
 
+// Stack utama untuk daftar tugas
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+// Stack khusus untuk menampung data yang di-Pop (Undo Stack)
+let undoStack = [];
+
 // ================= LOGIN =================
 function login() {
   const user = document.getElementById("username").value;
@@ -313,15 +319,23 @@ function addTodo() {
 );
   showTasks();
 }
-
 function removeTodo() {
-  if (kelarIn.length === 0){
-    showPopup(
-   "Stack Kosong",
-   "Belum ada tugas di tumpukan."
-    );
-  return;
-}
+  if (todos.length === 0) {
+    alert("Tumpukan kosong! Tidak ada yang bisa dihapus.");
+    return;
+  }
+
+  // 1. Ambil elemen terakhir (Top) dari stack utama
+  const removedTask = todos.pop();
+
+  // 2. Masukkan elemen tersebut ke dalam undoStack (Push)
+  undoStack.push(removedTask);
+
+  // 3. Simpan perubahan dan perbarui tampilan
+  saveData();
+  showTasks();
+  
+  console.log("Berhasil Pop:", removedTask.text);
 
   const removed = kelarIn.pop();
   undoStack.push(removed);
@@ -489,14 +503,23 @@ setInterval(checkDeadlines, 30000);
 
 // ================= UNDO REMOVE =================
 function undoRemove() {
-
-  if (undoStack.length === 0){
-    showPopup(
-      "Undo Gagal",
-      "Tidak ada data yang bisa dikembalikan."
-    );
+  if (undoStack.length === 0) {
+    alert("Tidak ada tindakan yang bisa dibatalkan.");
     return;
   }
+
+  // 1. Ambil elemen terakhir dari undoStack (Pop)
+  const restoredTask = undoStack.pop();
+
+  // 2. Kembalikan ke stack utama (Push)
+  todos.push(restoredTask);
+
+  // 3. Simpan perubahan dan perbarui tampilan
+  saveData();
+  showTasks();
+  
+  console.log("Berhasil Undo:", restoredTask.text);
+
 
   const restored = undoStack.pop();
   kelarIn.push(restored);
@@ -508,4 +531,10 @@ function undoRemove() {
     "Undo Berhasil ↩️",
     "Task berhasil dikembalikan."
   );
+}
+
+function saveData() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  // undoStack biasanya bersifat sementara (per sesi), 
+  // tapi bisa disimpan juga jika ingin permanen.
 }
