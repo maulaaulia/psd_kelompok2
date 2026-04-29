@@ -984,13 +984,23 @@ body.dashboard main {
 /* ================= FIX INPUT TIDAK BISA DIKLIK ================= */
 
 /* semua efek visual jangan nangkep klik */
+/* ================= FIX CLICK BLOCK ISSUE ================= */
 aside::before,
 aside::after,
+.card::before,
 .login-container::before,
-.card::before {
-  pointer-events: none;
+.login-container::after {
+  pointer-events: none !important;
 }
 
+aside,
+main,
+.card,
+.grid,
+.content {
+  position: relative;
+  z-index: 1;
+}
 /* pastikan area form di atas semua layer */
 .add-modern,
 .add-modern * {
