@@ -56,7 +56,7 @@ function showHome() {
 
   content.innerHTML = `
     <div class="card big" style="text-align: center; padding: 40px 20px;">
-      <img src="img/logo.png" style="width: 80px; margin-bottom: 20px;">
+      <img src="img/logo.png" style="width: 200px; margin-bottom: 20px;">
       <h2 style="color: #444;">Selamat Datang Kembali! ✨</h2>
       <p style="color: #777; margin-bottom: 30px;">Siap untuk menyelesaikan tugasmu hari ini dengan sistem LIFO?</p>
       
@@ -292,7 +292,10 @@ function addTodo() {
   const input = document.getElementById("todoInput");
   const dateInput = document.getElementById("deadlineInput");
 
-  if (!input || !input.value.trim()) return;
+  if (!input || !input.value.trim()) {
+    showPopup("Oops 😅", "Judul tugas tidak boleh kosong!");
+    return;
+  }
 
   const deadlineValue = dateInput.value || "Tanpa Deadline";
 
@@ -307,23 +310,31 @@ function addTodo() {
   if (dateInput) dateInput.value = "";
 
   save();
+
   showPopup(
- "Berhasil ✅",
- "Tugas masuk ke stack."
-);
+    "Berhasil ✅",
+    "Tugas masuk ke stack."
+  );
+
   showTasks();
 }
 
 function removeTodo() {
-  if (kelarIn.length === 0) {
-    showPopup("Stack Kosong", "Belum ada tugas di tumpukan.");
-    return;
-  }
+  if (kelarIn.length === 0){
+    showPopup(
+   "Stack Kosong",
+   "Belum ada tugas di tumpukan."
+    );
+  return;
+}
 
   // 1. Proses data (LIFO)
-  const removed = kelarIn.pop();
-  undoStack.push(removed);
-  history.push(removed);
+  const removed = kelarIn.pop();   // hapus data paling atas (LIFO)
+  undoStack.push(removed);         // simpan untuk undo
+  history.push(removed);           // simpan ke riwayat
+
+  save();        // 🔥 WAJIB → simpan ke localStorage
+  showTasks();   // 🔥 WAJIB → refresh tampilan
 
   // 2. Update UI & Storage SEGERA
   save();       
@@ -333,7 +344,7 @@ function removeTodo() {
   showPopup(
     "Pop Berhasil ✅",
     "Tugas " + removed.text + " dihapus dari stack."
-  );
+);
 }
 
 function toggleStatus(index) {
@@ -432,29 +443,6 @@ document.addEventListener("click", function (e) {
     modal.classList.remove("active");
   }
 });
-
-// ================= CORE ACTIONS (SIMPAN JAM) =================
-function addTodo() {
-  const input = document.getElementById("todoInput");
-  const dateInput = document.getElementById("deadlineInput");
-
-  if (!input || !input.value.trim()) return;
-
-  const deadlineValue = dateInput.value || "Tanpa Deadline";
-
-  kelarIn.push({
-    text: input.value.trim(),
-    deadline: deadlineValue,
-    done: false,
-    notified: false
-  });
-
-  input.value = "";
-  if (dateInput) dateInput.value = "";
-
-  save();
-  showTasks();
-}
 
 // ================= FITUR ALARM / NOTIFIKASI =================
 function checkDeadlines() {
