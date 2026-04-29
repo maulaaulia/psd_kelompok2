@@ -28,14 +28,14 @@ aside {
   left: 20px;
   bottom: 20px;
 
-  width: 220px;
+  width: 200px;
 
   border-radius: 25px;
 
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(25px);
 
-  padding: 20px;
+  padding: 18px;
 
   display: flex;
   flex-direction: column;
@@ -205,7 +205,8 @@ main {
 }
 
 .topbar h1 {
-  margin: 0;
+  font-size: 22px; /* sebelumnya besar */
+  font-weight: 600;
 }
 
 .user {
@@ -240,6 +241,14 @@ main {
   overflow: hidden;
 
   transition: all 0.3s ease;
+}
+
+.card {
+  padding: 16px; /* sebelumnya 20px */
+}
+
+.card.big {
+  padding: 18px;
 }
 
 /* efek glow neon */
@@ -277,13 +286,21 @@ main {
 /* ================= GRID ================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
+}
+
+.content {
+  margin-top: 15px;
+}
+
+.card + .card {
+  margin-top: 12px;
 }
 
 /* ================= NUMBER ================= */
 .number {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   margin-top: 10px;
 }
@@ -840,4 +857,19 @@ input::placeholder {
 ::-webkit-scrollbar-thumb {
   background: #6366f1;
   border-radius: 10px;
+}
+
+main {
+  flex: 1;
+  padding: 20px 30px;
+  margin-left: 260px; /* kasih jarak dari sidebar */
+  max-width: 1200px;  /* 🔥 biar ga terlalu lebar */
+}
+
+.card {
+  max-width: 100%;
+}
+
+.card.big {
+  max-width: 900px;
 }
