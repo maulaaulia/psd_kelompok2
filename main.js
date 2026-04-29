@@ -315,22 +315,25 @@ function addTodo() {
 }
 
 function removeTodo() {
-  if (kelarIn.length === 0){
+  if (kelarIn.length === 0) {
     showPopup(
-   "Stack Kosong",
-   "Belum ada tugas di tumpukan."
+      "Stack Kosong",
+      "Belum ada tugas di tumpukan."
     );
-  return;
-}
+    return;
+  }
 
-  const removed = kelarIn.pop();
-  undoStack.push(removed);
-  history.push(removed);
+  const removed = kelarIn.pop();   // hapus data paling atas (LIFO)
+  undoStack.push(removed);         // simpan untuk undo
+  history.push(removed);           // simpan ke riwayat
+
+  save();        // 🔥 WAJIB → simpan ke localStorage
+  showTasks();   // 🔥 WAJIB → refresh tampilan
 
   showPopup(
     "Pop Berhasil ✅",
-    "Tugas " + removed.text + " dihapus dari stack."
-);
+    "Tugas '" + removed.text + "' dihapus dari stack."
+  );
 }
 
 function toggleStatus(index) {
