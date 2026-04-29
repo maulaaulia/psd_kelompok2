@@ -315,29 +315,25 @@ function addTodo() {
 }
 
 function removeTodo() {
-  // 1. Cek apakah array kosong
-  if (todos.length === 0) {
+  if (kelarIn.length === 0) {
     showPopup("Stack Kosong", "Belum ada tugas di tumpukan.");
     return;
   }
 
-  // 2. Proses LIFO (Pop dari stack utama, Push ke undo & history)
-  const removed = todos.pop(); 
+  // 1. Proses data (LIFO)
+  const removed = kelarIn.pop();
   undoStack.push(removed);
   history.push(removed);
 
-  // 3. Eksekusi OTOMATIS (Simpan dan Gambar Ulang)
-  save();       // Update data di LocalStorage
-  showTasks();  // <--- INI KUNCINYA: Memaksa layar merender ulang daftar tugas
+  // 2. Update UI & Storage SEGERA
+  save();       
+  showTasks();  // <--- Ini yang membuat daftar tugas langsung terhapus di layar
 
-  // 4. Munculkan Popup setelah layar terupdate
+  // 3. Baru munculkan notifikasi
   showPopup(
     "Pop Berhasil ✅",
     "Tugas " + removed.text + " dihapus dari stack."
   );
-
-save();
-showTasks();
 }
 
 function toggleStatus(index) {
