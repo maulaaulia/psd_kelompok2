@@ -139,7 +139,7 @@ let html = `
       id="searchTask" 
       placeholder="🔍 Cari tugas..." 
       onkeyup="filterTasks()" 
-      style="width:95%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;"
+      style="width:98%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;"
     >
 `;
 
