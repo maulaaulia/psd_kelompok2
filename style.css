@@ -865,6 +865,10 @@ main {
   margin-left: 260px; /* kasih jarak dari sidebar */
   max-width: 1200px;  /* 🔥 biar ga terlalu lebar */
 }
+body.home main {
+  display: flex;
+  justify-content: center;
+}
 
 .card {
   max-width: 100%;
@@ -886,4 +890,17 @@ main {
 .content .card.big {
   width: 100%;
   max-width: 800px; /* atur sesuai selera */
+}
+
+/* ================= KHUSUS HOME DOANG ================= */
+body.home .content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px;
+}
+
+body.home .content .card.big {
+  width: 100%;
+  max-width: 800px;
 }
