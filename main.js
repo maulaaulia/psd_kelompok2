@@ -126,28 +126,35 @@ function showTasks() {
   if (!content) return;
 
   let html = `
-  <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-      <h3>Tumpukan Tugas (LIFO)</h3>
-      <div style="display:flex; gap:10px;"> <button onclick="undoRemove()" style="background:#a0c4ff; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
-          ↩️ Undo Pop
-        </button>
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <h3>Tumpukan Tugas (LIFO)</h3>
 
-        <button onclick="removeTodo()" style="background:#ffadad; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
-          🗑️ Pop Teratas
-        </button>
+    <div style="display:flex; gap:10px;">
+      
+      <button onclick="undoRemove()" class="icon-btn-main">
+        <img src="icon/undo.png" class="btn-icon"> 
+        Undo Pop
+      </button>
 
-      </div>
+      <button onclick="removeTodo()" class="icon-btn-main delete">
+        <img src="icon/delete.png" class="btn-icon"> 
+        Pop Teratas
+      </button>
+
     </div>
+  </div>
 
+  <div class="search-box">
+    <img src="icon/search.png" class="search-icon">
     <input 
       type="text" 
       id="searchTask" 
-      placeholder="🔍 Cari tugas..." 
-      onkeyup="filterTasks()" 
-      style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;"
+      placeholder="Cari tugas..." 
+      onkeyup="filterTasks()"
     >
-  `;
+  </div>
+`;
   
   // ... sisa kode showTasks ke bawah sama ...
 

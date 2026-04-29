@@ -502,3 +502,63 @@ input[type="date"] {
     opacity: 1;
   }
 }
+
+/* ================= BUTTON ICON ================= */
+.icon-btn-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: linear-gradient(135deg, #bde0fe, #cdb4db);
+  color: #333;
+
+  border: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.icon-btn-main.delete {
+  background: linear-gradient(135deg, #ffadad, #ffd6a5);
+}
+
+.icon-btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+}
+
+/* ICON DALAM BUTTON */
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ================= SEARCH BOX ================= */
+.search-box {
+  display: flex;
+  align-items: center;
+
+  background: #f8fafc;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
+
+/* ICON SEARCH */
+.search-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
