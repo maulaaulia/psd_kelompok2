@@ -957,3 +957,20 @@ body.dashboard main {
   color: white !important;
   caret-color: white; /* biar kursor kelihatan */
 }
+
+/* ================= FIX INPUT TIDAK BISA DIKLIK ================= */
+
+/* semua efek visual jangan nangkep klik */
+aside::before,
+aside::after,
+.login-container::before,
+.card::before {
+  pointer-events: none;
+}
+
+/* pastikan area form di atas semua layer */
+.add-modern,
+.add-modern * {
+  position: relative;
+  z-index: 10;
+}
