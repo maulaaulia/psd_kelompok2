@@ -880,10 +880,7 @@ body.home main {
 
 /* ================= CENTER CONTENT ================= */
 .content {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* bisa diganti center kalau mau full tengah */
-  min-height: calc(100vh - 100px);
+  margin-top: 15px;
 }
 
 /* biar card ga melebar */
@@ -893,14 +890,32 @@ body.home main {
 }
 
 /* ================= KHUSUS HOME DOANG ================= */
+/* ================= KHUSUS HOME ================= */
 body.home .content {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 20px;
 }
 
 body.home .content .card.big {
   width: 100%;
   max-width: 800px;
+}
+
+/* ================= DASHBOARD FIX ================= */
+body.dashboard .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+body.dashboard .card {
+  padding: 18px;
+}
+
+body.dashboard .number {
+  font-size: 26px;
+}
+body.dashboard main {
+  max-width: 1100px;
 }
