@@ -141,8 +141,24 @@ nav {
 }
 
 .nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+
+  background: transparent !important;
+  color: #cbd5f5;
+
+  border: none;
+  cursor: pointer;
+
   position: relative;
-  overflow: hidden;
+  z-index: 10;
+
+  transition: 0.3s;
 }
 
 /* efek klik modern */
@@ -288,6 +304,7 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
+  align-items: stretch;
 }
 
 .content {
@@ -324,8 +341,13 @@ input {
 }
 
 /* ================= BUTTON GENERAL ================= */
-button {
-  cursor: pointer;
+/* semua tombol harus di atas layer dekorasi */
+button,
+.nav-btn,
+.logout,
+.icon-btn-main {
+  position: relative;
+  z-index: 10;
 }
 
 /* ================= LOGIN MODERN ================= */
@@ -570,7 +592,6 @@ input[type="date"] {
   width: 120px;   /* kecil */
   height: 120px;  /* kecil */
 
-  background: url("./img/login.png") no-repeat center;
   background-size: contain;
 
   opacity: 0.15;
@@ -902,7 +923,19 @@ body.dashboard .grid {
 }
 
 .card {
-  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+
+  padding: 18px;
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+  transition: 0.3s;
 }
 
 .card.big {
@@ -961,16 +994,228 @@ body.dashboard main {
 /* ================= FIX INPUT TIDAK BISA DIKLIK ================= */
 
 /* semua efek visual jangan nangkep klik */
+/* ================= FIX CLICK BLOCK ISSUE ================= */
 aside::before,
 aside::after,
+.card::before,
 .login-container::before,
-.card::before {
-  pointer-events: none;
+.login-container::after {
+  pointer-events: none !important;
 }
 
+aside,
+main,
+.card,
+.grid,
+.content {
+  position: relative;
+  z-index: 1;
+}
 /* pastikan area form di atas semua layer */
 .add-modern,
 .add-modern * {
   position: relative;
   z-index: 10;
+}/* ================= LOGIN NEON UPGRADE ================= */
+
+/* background lebih hidup */
+body.login {
+  background: radial-gradient(circle at top, #1e293b, #0f172a 70%) !important;
+}
+
+/* container biar ada efek glow */
+.login-container {
+  position: relative;
+}
+
+/* efek glow belakang */
+.login-container::after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+
+  background: radial-gradient(circle, rgba(99,102,241,0.4), transparent 70%);
+  filter: blur(80px);
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* card login neon */
+.login-card {
+  position: relative;
+  z-index: 2;
+
+  background: rgba(255,255,255,0.05) !important;
+  backdrop-filter: blur(25px);
+
+  border: 1px solid rgba(255,255,255,0.1);
+
+  box-shadow:
+    0 0 20px rgba(99,102,241,0.4),
+    0 0 60px rgba(139,92,246,0.2);
+
+  transition: 0.3s;
+}
+
+/* hover card */
+.login-card:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 0 30px rgba(99,102,241,0.6),
+    0 0 80px rgba(139,92,246,0.3);
+}
+
+/* input neon focus */
+.login-card input:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 10px #6366f1;
+}
+
+/* tombol login neon */
+.btn-login {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  box-shadow: 0 0 15px rgba(99,102,241,0.5);
+}
+
+.btn-login:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 25px rgba(99,102,241,0.8),
+    0 0 50px rgba(139,92,246,0.5);
+}
+
+/* text login */
+.login-card h2 {
+  color: #e0e7ff;
+}
+
+.subtitle {
+  color: #94a3b8;
+}
+
+/* ================= FIX CARD UNIFORM ================= */
+.grid .card {
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grid {
+  align-items: stretch;
+}
+
+
+/* ================= FIX CLICK LAYER ================= */
+aside::before,
+aside::after,
+.card::before,
+.login-container::before,
+.login-container::after {
+  pointer-events: none !important;
+}
+
+/* =========================================
+   FINAL SAFE PATCH — NO BREAK, NO CHANGE
+   ========================================= */
+
+/* ===== FIX CLICK & LAYER (WAJIB) ===== */
+aside::before,
+aside::after,
+.card::before,
+.login-container::before,
+.login-container::after {
+  pointer-events: none !important;
+}
+
+aside,
+main,
+.card,
+.content,
+.grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* pastikan semua tombol & input aman diklik */
+button,
+.nav-btn,
+.logout,
+.icon-btn,
+.icon-btn-main,
+.btn-login,
+input {
+  position: relative;
+  z-index: 5;
+}
+
+/* ===== FIX INPUT ===== */
+input {
+  caret-color: white;
+}
+
+/* ===== FIX NAV BUTTON CONFLICT ===== */
+/* paksa pakai versi dark tanpa ubah tampilan lain */
+.nav-btn {
+  background: transparent !important;
+  color: #cbd5f5 !important;
+}
+
+/* ===== FIX CARD CONSISTENT ===== */
+.card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* ===== FIX GRID BIAR GA ANEH ===== */
+.grid {
+  align-items: stretch;
+}
+
+/* ===== FIX MAIN SPACING ===== */
+main {
+  margin-left: 260px;
+}
+
+/* ===== FIX MODAL CLICK ===== */
+.modal {
+  pointer-events: auto;
+}
+
+.modal-content {
+  pointer-events: auto;
+}
+
+/* ===== NEON ENHANCEMENT (TIDAK MERUBAH LAYOUT) ===== */
+
+/* glow halus sidebar */
+aside {
+  box-shadow:
+    0 0 20px rgba(99,102,241,0.25),
+    0 0 60px rgba(139,92,246,0.15),
+    10px 20px 40px rgba(0,0,0,0.5);
+}
+
+/* glow halus card */
+.card:hover {
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.4),
+    0 0 15px rgba(99,102,241,0.2),
+    0 0 30px rgba(139,92,246,0.15);
+}
+
+/* tombol lebih hidup dikit */
+.icon-btn-main:hover,
+.btn-login:hover,
+.logout:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== ANIMATION SMOOTH ===== */
+* {
+  transition: all 0.2s ease;
 }
