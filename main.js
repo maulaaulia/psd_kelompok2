@@ -492,3 +492,25 @@ if (Notification.permission !== "denied") {
 
 // Jalankan pengecekan setiap 30 detik
 setInterval(checkDeadlines, 30000);
+let undoStack = []; // Stack baru untuk menampung yang barusan di-pop
+
+function removeTodo() {
+  if (todos.length === 0) return alert("Stack kosong!");
+  
+  const removed = todos.pop(); // Pop dari main stack
+  undoStack.push(removed);    // Push ke undo stack
+  
+  save();
+  showTasks();
+  alert(`🗑️ Pop Berhasil: ${removed.text}. Salah pencet? Gunakan Undo!`);
+}
+
+function undoRemove() {
+  if (undoStack.length === 0) return alert("Tidak ada yang bisa di-undo!");
+  
+  const restored = undoStack.pop(); // Pop dari undo stack
+  todos.push(restored);            // Push balik ke main stack
+  
+  save();
+  showTasks();
+}
