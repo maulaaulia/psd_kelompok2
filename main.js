@@ -391,13 +391,11 @@ function showPopup(title, desc) {
   document.getElementById("popupText").innerText = title;
   document.getElementById("popupDesc").innerText = desc;
 
-  const modal = document.getElementById("popupModal");
-  modal.classList.add("active");
+  document.getElementById("popupModal").classList.add("active");
 }
 
 function closePopup() {
-  const modal = document.getElementById("popupModal");
-  modal.classList.remove("active");
+  document.getElementById("popupModal").classList.remove("active");
 }
 
 // ================= VIEW: TAMBAH (DENGAN JAM) =================
