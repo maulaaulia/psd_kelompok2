@@ -292,7 +292,10 @@ function addTodo() {
   const input = document.getElementById("todoInput");
   const dateInput = document.getElementById("deadlineInput");
 
-  if (!input || !input.value.trim()) return;
+  if (!input || !input.value.trim()) {
+    showPopup("Oops 😅", "Judul tugas tidak boleh kosong!");
+    return;
+  }
 
   const deadlineValue = dateInput.value || "Tanpa Deadline";
 
@@ -307,10 +310,12 @@ function addTodo() {
   if (dateInput) dateInput.value = "";
 
   save();
+
   showPopup(
- "Berhasil ✅",
- "Tugas masuk ke stack."
-);
+    "Berhasil ✅",
+    "Tugas masuk ke stack."
+  );
+
   showTasks();
 }
 
@@ -432,29 +437,6 @@ document.addEventListener("click", function (e) {
     modal.classList.remove("active");
   }
 });
-
-// ================= CORE ACTIONS (SIMPAN JAM) =================
-function addTodo() {
-  const input = document.getElementById("todoInput");
-  const dateInput = document.getElementById("deadlineInput");
-
-  if (!input || !input.value.trim()) return;
-
-  const deadlineValue = dateInput.value || "Tanpa Deadline";
-
-  kelarIn.push({
-    text: input.value.trim(),
-    deadline: deadlineValue,
-    done: false,
-    notified: false
-  });
-
-  input.value = "";
-  if (dateInput) dateInput.value = "";
-
-  save();
-  showTasks();
-}
 
 // ================= FITUR ALARM / NOTIFIKASI =================
 function checkDeadlines() {
