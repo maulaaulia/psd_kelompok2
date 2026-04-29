@@ -562,3 +562,61 @@ input[type="date"] {
   height: 16px;
   opacity: 0.6;
 }
+
+/* MASKOT KANAN BAWAH */
+.login-container::after {
+  content: "";
+  position: absolute;
+
+  width: 260px; /* ukuran maskot */
+  height: 260px;
+
+  background: url("./img/login.png") no-repeat center;
+  background-size: contain;
+
+  right: 30px;
+  bottom: 0;
+
+  opacity: 0.9;
+
+  z-index: 0;
+  pointer-events: none;
+
+  /* efek biar modern */
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+}
+
+/* BACKGROUND PIANO */
+.login-container {
+  background:
+    linear-gradient(135deg, #e0f2fe, #fef9c3),
+    url("./img/piano.png");
+
+  background-size: cover, contain;
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, bottom left;
+}
+
+.login-card {
+  position: relative;
+  z-index: 2;
+
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(25px);
+
+  border: 1px solid rgba(255,255,255,0.3);
+
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.08),
+    inset 0 0 10px rgba(255,255,255,0.4);
+}
+
+@keyframes floatMascot {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.login-container::after {
+  animation: floatMascot 4s ease-in-out infinite;
+}
