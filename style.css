@@ -570,7 +570,6 @@ input[type="date"] {
   width: 120px;   /* kecil */
   height: 120px;  /* kecil */
 
-  background: url("./img/login.png") no-repeat center;
   background-size: contain;
 
   opacity: 0.15;
