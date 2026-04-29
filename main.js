@@ -372,3 +372,87 @@ function showPopup(title, desc) {
 function closePopup() {
   document.getElementById("popupModal").style.display = "none";
 }
+
+// ================= VIEW: TAMBAH (DENGAN JAM) =================
+function showAdd() {
+  const title = document.getElementById("pageTitle");
+  if (title) title.innerText = "Tambah Tugas";
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="card add-modern">
+      <h3>✨ Tambah Tugas & Waktu</h3>
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Judul Tugas</label>
+        <input id="todoInput" placeholder="Contoh: Kumpul Laporan..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
+      </div>
+
+      <div class="form-group" style="margin-top: 15px;">
+        <label>Waktu & Tanggal Deadline</label>
+        <input type="datetime-local" id="deadlineInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
+      </div>
+
+      <button class="nav-btn" onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold;">
+        ➕ Tambahkan ke Stack
+      </button>
+    </div>
+  `;
+}
+
+// ================= CORE ACTIONS (SIMPAN JAM) =================
+function addTodo() {
+  const input = document.getElementById("todoInput");
+  const dateInput = document.getElementById("deadlineInput");
+
+  if (!input || !input.value.trim()) return;
+
+  const deadlineValue = dateInput.value || "Tanpa Deadline";
+
+  todos.push({
+    text: input.value.trim(),
+    deadline: deadlineValue, // Menyimpan format: YYYY-MM-DDTHH:mm
+    done: false,
+    notified: false // Flag agar alarm tidak bunyi terus-menerus
+  });
+
+  input.value = "";
+  save();
+  showTasks();
+}
+
+// ================= FITUR ALARM / NOTIFIKASI =================
+function checkDeadlines() {
+  const now = new Date();
+  
+  todos.forEach((t, index) => {
+    if (t.deadline !== "Tanpa Deadline" && !t.done && !t.notified) {
+      const taskTime = new Date(t.deadline);
+      
+      // Jika waktu sekarang sudah melewati atau sama dengan waktu tugas
+      if (now >= taskTime) {
+        // 1. Munculkan Notifikasi Browser
+        if (Notification.permission === "granted") {
+          new Notification("⏰ Pengingat Tugas!", {
+            body: `Waktunya mengerjakan: ${t.text}`,
+            icon: "icon/calendar.png"
+          });
+        }
+        
+        // 2. Munculkan Alert sebagai Alarm
+        alert("🚨 ALARM DEADLINE!\nTugas: " + t.text + "\nSegera selesaikan!");
+        
+        // Tandai sudah dinotifikasi agar tidak muncul berulang kali
+        todos[index].notified = true;
+        save();
+      }
+    }
+  });
+}
+
+// Minta izin notifikasi saat halaman dimuat
+if (Notification.permission !== "denied") {
+  Notification.requestPermission();
+}
+
+// Jalankan pengecekan setiap 30 detik
+setInterval(checkDeadlines, 30000);
