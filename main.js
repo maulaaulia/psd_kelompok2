@@ -125,13 +125,19 @@ function showTasks() {
   if (title) title.innerText = "Daftar Tugas";
   if (!content) return;
 
-let html = `
+  let html = `
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
       <h3>Tumpukan Tugas (LIFO)</h3>
-      <button onclick="removeTodo()" style="background:#ffadad; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
-        🗑️ Pop Teratas
-      </button>
+      <div style="display:flex; gap:10px;"> <button onclick="undoRemove()" style="background:#a0c4ff; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
+          ↩️ Undo Pop
+        </button>
+
+        <button onclick="removeTodo()" style="background:#ffadad; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
+          🗑️ Pop Teratas
+        </button>
+
+      </div>
     </div>
 
     <input 
@@ -141,7 +147,9 @@ let html = `
       onkeyup="filterTasks()" 
       style="width:98%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;"
     >
-`;
+  `;
+  
+  // ... sisa kode showTasks ke bawah sama ...
 
   if (todos.length === 0) {
     html += `<div class="empty">Tumpukan kosong ✨</div>`;
@@ -492,3 +500,34 @@ if (Notification.permission !== "denied") {
 
 // Jalankan pengecekan setiap 30 detik
 setInterval(checkDeadlines, 30000);
+// Di bagian paling atas
+let undoStack = JSON.parse(localStorage.getItem("undoStack")) || [];
+
+// Modifikasi fungsi save
+function save() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem("todoHistory", JSON.stringify(history));
+  localStorage.setItem("undoStack", JSON.stringify(undoStack)); // Simpan undo stack
+}
+
+// Modifikasi fungsi removeTodo (biar rapi)
+function removeTodo() {
+  if (todos.length === 0) return alert("Stack kosong!");
+  
+  const removed = todos.pop(); 
+  undoStack.push(removed);    
+  history.push(removed); // Tetap masukkan ke history sebagai catatan
+  
+  save();
+  showTasks();
+}
+
+function undoRemove() {
+  if (undoStack.length === 0) return alert("Tidak ada yang bisa di-undo!");
+  
+  const restored = undoStack.pop(); // Pop dari undo stack
+  todos.push(restored);            // Push balik ke main stack
+  
+  save();
+  showTasks();
+}
