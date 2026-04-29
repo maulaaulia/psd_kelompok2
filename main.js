@@ -181,7 +181,9 @@ function showTasks() {
                 ${t.text} ${isTop}
               </span>
             </div>
-            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline}</small>
+            <small style="color: #bdb2ff; font-weight: bold;">
+  ⏰ ${t.deadline !== "Tanpa Deadline" ? t.deadline.replace("T", " | ") : t.deadline}
+</small>
           </div>
         </div>
       `;
