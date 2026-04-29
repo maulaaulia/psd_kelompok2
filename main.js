@@ -11,7 +11,10 @@ function login() {
     localStorage.setItem("user", user);
     window.location.href = "dashboard.html";
   } else {
-    alert("Username / Password salah!");
+   showPopup(
+   "Login Gagal ❌",
+  "Username atau password salah."
+  );
   }
 }
 
@@ -304,18 +307,30 @@ function addTodo() {
   if (dateInput) dateInput.value = "";
 
   save();
+  showPopup(
+ "Berhasil ✅",
+ "Tugas masuk ke stack."
+);
   showTasks();
 }
 
 function removeTodo() {
-  if (kelarIn.length === 0) return alert("Stack kosong!");
+  if (kelarIn.length === 0){
+    showPopup(
+   "Stack Kosong",
+   "Belum ada tugas di tumpukan."
+    );
+  return;
+}
 
   const removed = kelarIn.pop();
   undoStack.push(removed);
   history.push(removed);
 
-  save();
-  showTasks();
+  showPopup(
+    "Pop Berhasil ✅",
+    "Tugas " + removed.text + " dihapus dari stack."
+);
 }
 
 function toggleStatus(index) {
@@ -454,7 +469,10 @@ function checkDeadlines() {
           });
         }
 
-        alert("🚨 ALARM DEADLINE!\nTugas: " + t.text + "\nSegera selesaikan!");
+        showPopup(
+      "🚨 Deadline Tiba!",
+      "Segera kerjakan: " + t.text
+      );
 
         kelarIn[index].notified = true;
         save();
@@ -471,11 +489,23 @@ setInterval(checkDeadlines, 30000);
 
 // ================= UNDO REMOVE =================
 function undoRemove() {
-  if (undoStack.length === 0) return alert("Tidak ada yang bisa di-undo!");
+
+  if (undoStack.length === 0){
+    showPopup(
+      "Undo Gagal",
+      "Tidak ada data yang bisa dikembalikan."
+    );
+    return;
+  }
 
   const restored = undoStack.pop();
   kelarIn.push(restored);
 
   save();
   showTasks();
+
+  showPopup(
+    "Undo Berhasil ↩️",
+    "Task berhasil dikembalikan."
+  );
 }
