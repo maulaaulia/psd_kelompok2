@@ -19,15 +19,40 @@ body {
 }
 
 /* ================= SIDEBAR ================= */
+/* ================= SIDEBAR (FLOATING VERSION) ================= */
 aside {
-  width: 230px;
-  background: rgba(200, 220, 255, 0.85); /* cuma ganti warna */
-  backdrop-filter: blur(10px);
-  padding: 20px;
+  width: 220px;
+  /* Gunakan margin untuk membuat efek melayang */
+  margin: 20px; 
+  
+  /* Kurangi opasitas (0.4 - 0.6 biasanya pas untuk background gradasi) */
+  background: rgba(255, 255, 255, 0.4); 
+  
+  /* Efek kaca (blur) diperkuat biar tetap terbaca walau redup */
+  backdrop-filter: blur(15px); 
+  -webkit-backdrop-filter: blur(15px);
+  
+  padding: 25px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 0 20px 20px 0;
+  
+  /* Buat semua sudut melengkung karena dia melayang */
+  border-radius: 24px; 
+  
+  /* Tambahkan border tipis putih agar terlihat lebih 'clean' */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  /* Pastikan tinggi sidebar tidak full kalau mau melayang */
+  height: calc(100vh - 40px); 
+  box-sizing: border-box;
+}
+
+/* Biar konten di sebelah kanan tidak ketabrak sidebar */
+#app {
+  display: flex;
+  height: 100vh;
+  align-items: center; /* Opsional: biar sidebar & main content sejajar tengah */
 }
 
 .logo {
