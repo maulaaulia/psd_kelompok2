@@ -141,8 +141,20 @@ nav {
 }
 
 .nav-btn {
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+
+  background: transparent;
+  color: #cbd5f5;
+
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 /* efek klik modern */
@@ -901,7 +913,19 @@ body.dashboard .grid {
 }
 
 .card {
-  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+
+  padding: 18px;
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+  transition: 0.3s;
 }
 
 .card.big {
@@ -1051,4 +1075,20 @@ body.login {
 
 .subtitle {
   color: #94a3b8;
+}
+
+/* ================= FIX CARD UNIFORM ================= */
+.grid .card {
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grid {
+  align-items: stretch;
+}
+
+.grid .card {
+  height: 100%;
 }
