@@ -554,7 +554,7 @@ input[type="date"] {
   background: url("./img/login.png") no-repeat center;
   background-size: contain;
 
-  right: 10px;
+  right: 50px;
   bottom: -20;
 
   opacity: 0.9;
