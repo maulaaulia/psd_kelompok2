@@ -149,11 +149,15 @@ nav {
   margin-bottom: 10px;
   border-radius: 14px;
 
-  background: transparent;
+  background: transparent !important;
   color: #cbd5f5;
 
   border: none;
   cursor: pointer;
+
+  position: relative;
+  z-index: 10;
+
   transition: 0.3s;
 }
 
@@ -300,6 +304,7 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
+  align-items: stretch;
 }
 
 .content {
@@ -336,8 +341,13 @@ input {
 }
 
 /* ================= BUTTON GENERAL ================= */
-button {
-  cursor: pointer;
+/* semua tombol harus di atas layer dekorasi */
+button,
+.nav-btn,
+.logout,
+.icon-btn-main {
+  position: relative;
+  z-index: 10;
 }
 
 /* ================= LOGIN MODERN ================= */
@@ -1099,6 +1109,12 @@ body.login {
   align-items: stretch;
 }
 
-.grid .card {
-  height: 100%;
+
+/* ================= FIX CLICK LAYER ================= */
+aside::before,
+aside::after,
+.card::before,
+.login-container::before,
+.login-container::after {
+  pointer-events: none !important;
 }
