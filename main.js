@@ -11,7 +11,10 @@ function login() {
     localStorage.setItem("user", user);
     window.location.href = "dashboard.html";
   } else {
-    alert("Username / Password salah!");
+   showPopup(
+   "Login Gagal ❌",
+  "Username atau password salah."
+  );
   }
 }
 
@@ -28,30 +31,28 @@ if (userName) {
   userName.innerText = "👋 Hi, " + (localStorage.getItem("user") || "User");
 }
 
-// ... (kode bagian atas tetap sama)
-
 // ================= DATA (DATABASE LOKAL) =================
 const content = document.querySelector(".content");
-let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-// --- SISIPKAN DI SINI ---
-let undoStack = JSON.parse(localStorage.getItem("undoStack")) || []; 
-// ------------------------
+// pakai kelarIn, tapi tetap baca data lama dari todos
+let kelarIn = JSON.parse(localStorage.getItem("kelarIn")) || JSON.parse(localStorage.getItem("todos")) || [];
+let history = JSON.parse(localStorage.getItem("todoHistory")) || [];
+let undoStack = JSON.parse(localStorage.getItem("undoStack")) || [];
 
 function save() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-  // Tambahkan baris di bawah ini di dalam fungsi save yang sudah ada
-  localStorage.setItem("undoStack", JSON.stringify(undoStack)); 
+  localStorage.setItem("kelarIn", JSON.stringify(kelarIn));
+  localStorage.setItem("todoHistory", JSON.stringify(history));
+  localStorage.setItem("undoStack", JSON.stringify(undoStack));
+  localStorage.setItem("todos", JSON.stringify(kelarIn)); // biar data lama tetap kompatibel
 }
 
-// ... (sisa kode fungsi lainnya tetap sama)
 // ================= VIEW: HOME (TAMPILAN LOGIN STYLE) =================
 function showHome() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Home";
   if (!content) return;
 
-  const lastTask = todos.length > 0 ? todos[todos.length - 1] : null;
+  const lastTask = kelarIn.length > 0 ? kelarIn[kelarIn.length - 1] : null;
 
   content.innerHTML = `
     <div class="card big" style="text-align: center; padding: 40px 20px;">
@@ -91,8 +92,8 @@ function showDashboard() {
   if (title) title.innerText = "Dashboard";
   if (!content) return;
 
-  const total = todos.length;
-  const doneCount = todos.filter(t => t.done).length;
+  const total = kelarIn.length;
+  const doneCount = kelarIn.filter(t => t.done).length;
   const pendingCount = total - doneCount;
   const progressPercent = total === 0 ? 0 : Math.round((doneCount / total) * 100);
 
@@ -135,37 +136,44 @@ function showTasks() {
   if (!content) return;
 
   let html = `
-  <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-      <h3>Tumpukan Tugas (LIFO)</h3>
-      <div style="display:flex; gap:10px;"> <button onclick="undoRemove()" style="background:#a0c4ff; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
-          ↩️ Undo Pop
-        </button>
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <h3>Tumpukan Tugas (LIFO)</h3>
 
-        <button onclick="removeTodo()" style="background:#ffadad; color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:bold;">
-          🗑️ Pop Teratas
-        </button>
+    <div style="display:flex; gap:10px;">
+      
+      <button onclick="undoRemove()" class="icon-btn-main">
+        <img src="icon/undo.png" class="btn-icon"> 
+        Undo Pop
+      </button>
 
-      </div>
+      <button onclick="removeTodo()" class="icon-btn-main delete">
+        <img src="icon/delete.png" class="btn-icon"> 
+        Pop Teratas
+      </button>
+
     </div>
+  </div>
 
+  <div class="search-box">
+    <img src="icon/search.png" class="search-icon">
     <input 
       type="text" 
       id="searchTask" 
-      placeholder="🔍 Cari tugas..." 
-      onkeyup="filterTasks()" 
-      style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;"
+      placeholder="Cari tugas..." 
+      onkeyup="filterTasks()"
     >
-  `;
-  
-  // ... sisa kode showTasks ke bawah sama ...
+  </div>
+`;
 
-  if (todos.length === 0) {
+  if (kelarIn.length === 0) {
     html += `<div class="empty">Tumpukan kosong ✨</div>`;
   } else {
-    [...todos].reverse().forEach((t, i) => {
-      const originalIndex = todos.length - 1 - i;
-      const isTop = (i === 0) ? '<span class="badge" style="background:#a0c4ff; color:white; padding:2px 8px; border-radius:10px; font-size:10px; margin-left:10px;">TOP</span>' : '';
+    [...kelarIn].reverse().forEach((t, i) => {
+      const originalIndex = kelarIn.length - 1 - i;
+      const isTop = (i === 0)
+        ? '<span class="badge" style="background:#a0c4ff; color:white; padding:2px 8px; border-radius:10px; font-size:10px; margin-left:10px;">TOP</span>'
+        : '';
       
       html += `
         <div class="task" style="border-bottom:1px solid #eee; padding:15px 0;">
@@ -176,14 +184,16 @@ function showTasks() {
                 ${t.text} ${isTop}
               </span>
             </div>
-            <small style="color: #bdb2ff; font-weight: bold;">⏰ ${t.deadline}</small>
+            <small style="color: #bdb2ff; font-weight: bold;">
+  ⏰ ${t.deadline !== "Tanpa Deadline" ? t.deadline.replace("T", " | ") : t.deadline}
+</small>
           </div>
         </div>
       `;
     });
   }
 
-  html += `</div>`; 
+  html += `</div>`;
   content.innerHTML = html;
 }
 
@@ -203,7 +213,7 @@ function showAdd() {
 
       <div class="form-group" style="margin-top: 15px;">
         <label style="display: block; margin-bottom: 8px; font-weight: bold;">Tanggal Deadline</label>
-        <input type="date" id="deadlineInput" style="width: 95%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
+        <input type="datetime-local" id="deadlineInput" style="width: 95%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
       </div>
 
       <button class="nav-btn" onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold;">
@@ -213,12 +223,13 @@ function showAdd() {
   `;
 }
 
+// ================= VIEW: CALENDAR =================
 function showCalendar() {
   const title = document.getElementById("pageTitle");
   if (title) title.innerText = "Calendar & Deadline";
-  if (!content) return; 
+  if (!content) return;
 
-  const sortedTasks = todos
+  const sortedTasks = kelarIn
     .filter(t => t.deadline && t.deadline !== "Tanpa Deadline" && !t.done)
     .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
@@ -234,17 +245,15 @@ function showCalendar() {
     sortedTasks.forEach(t => {
       const now = new Date();
       const target = new Date(t.deadline);
-      const diffTime = target - now; // Hasil dalam milidetik
+      const diffTime = target - now;
 
       let timeText = "";
-      let statusColor = "#a0c4ff"; // Default Biru
+      let statusColor = "#a0c4ff";
 
       if (diffTime < 0) {
-        // JIKA TERLEWAT
         timeText = "Terlambat";
-        statusColor = "#ff4d4d"; // Merah tegas
+        statusColor = "#ff4d4d";
       } else {
-        // HITUNG HARI, JAM, MENIT
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
@@ -257,8 +266,7 @@ function showCalendar() {
           timeText = `${diffMinutes} Menit lagi`;
         }
 
-        // Warna peringatan jika mepet (kurang dari 1 hari)
-        if (diffDays < 1) statusColor = "#ffadad"; 
+        if (diffDays < 1) statusColor = "#ffadad";
       }
 
       html += `
@@ -282,36 +290,51 @@ function showCalendar() {
 // ================= CORE ACTIONS =================
 function addTodo() {
   const input = document.getElementById("todoInput");
-  const dateInput = document.getElementById("deadlineInput"); // Sudah sama dengan ID di HTML
+  const dateInput = document.getElementById("deadlineInput");
 
   if (!input || !input.value.trim()) return;
 
-  // Pastikan ada nilai deadline, jika kosong beri default
   const deadlineValue = dateInput.value || "Tanpa Deadline";
 
-  todos.push({
+  kelarIn.push({
     text: input.value.trim(),
     deadline: deadlineValue,
-    done: false
+    done: false,
+    notified: false
   });
 
   input.value = "";
   if (dateInput) dateInput.value = "";
 
   save();
-  showTasks(); // Langsung pindah ke halaman tugas setelah tambah
-}
-
-function removeTodo() {
-  if (todos.length === 0) return alert("Stack kosong!");
-  const removed = todos.pop();
-  alert("Pop Berhasil! Menghapus: " + removed.text);
-  save();
+  showPopup(
+ "Berhasil ✅",
+ "Tugas masuk ke stack."
+);
   showTasks();
 }
 
+function removeTodo() {
+  if (kelarIn.length === 0){
+    showPopup(
+   "Stack Kosong",
+   "Belum ada tugas di tumpukan."
+    );
+  return;
+}
+
+  const removed = kelarIn.pop();
+  undoStack.push(removed);
+  history.push(removed);
+
+  showPopup(
+    "Pop Berhasil ✅",
+    "Tugas " + removed.text + " dihapus dari stack."
+);
+}
+
 function toggleStatus(index) {
-  todos[index].done = !todos[index].done;
+  kelarIn[index].done = !kelarIn[index].done;
   save();
   showTasks();
 }
@@ -329,14 +352,6 @@ function setActive(btn) {
 window.onload = () => {
   if (isDashboard && content) showHome();
 };
-// Tambahkan di bagian atas bersama data lainnya
-let history = JSON.parse(localStorage.getItem("todoHistory")) || [];
-
-// Modifikasi fungsi save() agar menyimpan history juga
-function save() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-  localStorage.setItem("todoHistory", JSON.stringify(history));
-}
 
 // ================= VIEW: STATS & HISTORY (BARU) =================
 function showStats() {
@@ -344,8 +359,8 @@ function showStats() {
   if (title) title.innerText = "Statistik & Riwayat";
   if (!content) return;
 
-  const totalCreated = todos.length + history.length;
-  const totalDone = todos.filter(t => t.done).length + history.filter(t => t.done).length;
+  const totalCreated = kelarIn.length + history.length;
+  const totalDone = kelarIn.filter(t => t.done).length + history.filter(t => t.done).length;
 
   content.innerHTML = `
     <div class="card big">
@@ -371,7 +386,7 @@ function showStats() {
       <div style="margin-top: 15px;">
         ${history.length === 0 
           ? `<div class="empty">Belum ada riwayat penghapusan ✨</div>` 
-          : history.reverse().map(h => `
+          : [...history].reverse().map(h => `
             <div style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
               <span>${h.text}</span>
               <small style="color: #999;">${h.done ? '✅ Selesai' : '❌ Belum Selesai'}</small>
@@ -382,18 +397,7 @@ function showStats() {
   `;
 }
 
-// Modifikasi fungsi removeTodo agar menyimpan data ke history sebelum dihapus
-function removeTodo() {
-  if (todos.length === 0) return alert("Stack kosong!");
-  
-  const removed = todos.pop(); // Mengambil data teratas
-  history.push(removed); // Masukkan ke riwayat penggunaan
-  
-  alert("Pop Berhasil! Menghapus: " + removed.text);
-  save();
-  showTasks();
-}
-
+// ================= FILTER SEARCH =================
 function filterTasks() {
   const keyword = document.getElementById("searchTask").value.toLowerCase();
   const taskElements = document.querySelectorAll(".task");
@@ -404,6 +408,7 @@ function filterTasks() {
   });
 }
 
+// ================= POPUP =================
 function showPopup(title, desc) {
   document.getElementById("popupText").innerText = title;
   document.getElementById("popupDesc").innerText = desc;
@@ -414,43 +419,16 @@ function showPopup(title, desc) {
 
 function closePopup() {
   const modal = document.getElementById("popupModal");
-
-  // safety reset
   modal.classList.remove("active");
 }
+
 document.addEventListener("click", function (e) {
   const modal = document.getElementById("popupModal");
 
-  if (e.target === modal) {
+  if (modal && e.target === modal) {
     modal.classList.remove("active");
   }
 });
-
-// ================= VIEW: TAMBAH (DENGAN JAM) =================
-function showAdd() {
-  const title = document.getElementById("pageTitle");
-  if (title) title.innerText = "Tambah Tugas";
-  if (!content) return;
-
-  content.innerHTML = `
-    <div class="card add-modern">
-      <h3>✨ Tambah Tugas & Waktu</h3>
-      <div class="form-group" style="margin-top: 20px;">
-        <label>Judul Tugas</label>
-        <input id="todoInput" placeholder="Contoh: Kumpul Laporan..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
-      </div>
-
-      <div class="form-group" style="margin-top: 15px;">
-        <label>Waktu & Tanggal Deadline</label>
-        <input type="datetime-local" id="deadlineInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px;" />
-      </div>
-
-      <button class="nav-btn" onclick="addTodo()" style="width: 100%; background: #bdb2ff; color: white; border: none; padding: 15px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold;">
-        ➕ Tambahkan ke Stack
-      </button>
-    </div>
-  `;
-}
 
 // ================= CORE ACTIONS (SIMPAN JAM) =================
 function addTodo() {
@@ -461,14 +439,16 @@ function addTodo() {
 
   const deadlineValue = dateInput.value || "Tanpa Deadline";
 
-  todos.push({
+  kelarIn.push({
     text: input.value.trim(),
-    deadline: deadlineValue, // Menyimpan format: YYYY-MM-DDTHH:mm
+    deadline: deadlineValue,
     done: false,
-    notified: false // Flag agar alarm tidak bunyi terus-menerus
+    notified: false
   });
 
   input.value = "";
+  if (dateInput) dateInput.value = "";
+
   save();
   showTasks();
 }
@@ -476,67 +456,56 @@ function addTodo() {
 // ================= FITUR ALARM / NOTIFIKASI =================
 function checkDeadlines() {
   const now = new Date();
-  
-  todos.forEach((t, index) => {
+
+  kelarIn.forEach((t, index) => {
     if (t.deadline !== "Tanpa Deadline" && !t.done && !t.notified) {
       const taskTime = new Date(t.deadline);
-      
-      // Jika waktu sekarang sudah melewati atau sama dengan waktu tugas
+
       if (now >= taskTime) {
-        // 1. Munculkan Notifikasi Browser
         if (Notification.permission === "granted") {
           new Notification("⏰ Pengingat Tugas!", {
             body: `Waktunya mengerjakan: ${t.text}`,
             icon: "icon/calendar.png"
           });
         }
-        
-        // 2. Munculkan Alert sebagai Alarm
-        alert("🚨 ALARM DEADLINE!\nTugas: " + t.text + "\nSegera selesaikan!");
-        
-        // Tandai sudah dinotifikasi agar tidak muncul berulang kali
-        todos[index].notified = true;
+
+        showPopup(
+      "🚨 Deadline Tiba!",
+      "Segera kerjakan: " + t.text
+      );
+
+        kelarIn[index].notified = true;
         save();
       }
     }
   });
 }
 
-// Minta izin notifikasi saat halaman dimuat
 if (Notification.permission !== "denied") {
   Notification.requestPermission();
 }
 
-// Jalankan pengecekan setiap 30 detik
 setInterval(checkDeadlines, 30000);
-// Di bagian paling atas
-let undoStack = JSON.parse(localStorage.getItem("undoStack")) || [];
 
-// Modifikasi fungsi save
-function save() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-  localStorage.setItem("todoHistory", JSON.stringify(history));
-  localStorage.setItem("undoStack", JSON.stringify(undoStack)); // Simpan undo stack
-}
-
-// Modifikasi fungsi removeTodo (biar rapi)
-function removeTodo() {
-  if (todos.length === 0) return alert("Stack kosong!");
-  
-  const removed = todos.pop(); 
-  undoStack.push(removed);    
-  history.push(removed); // Tetap masukkan ke history sebagai catatan
-  
-  save();
-  showTasks();
-}
-
+// ================= UNDO REMOVE =================
 function undoRemove() {
-  if (undoStack.length === 0) return alert("Tidak ada yang bisa di-undo!");
-  
-  const restored = undoStack.pop(); // Pop dari undo stack
-  todos.push(restored);            // Push balik ke main stack
-  
+
+  if (undoStack.length === 0){
+    showPopup(
+      "Undo Gagal",
+      "Tidak ada data yang bisa dikembalikan."
+    );
+    return;
+  }
+
+  const restored = undoStack.pop();
+  kelarIn.push(restored);
+
   save();
   showTasks();
+
+  showPopup(
+    "Undo Berhasil ↩️",
+    "Task berhasil dikembalikan."
+  );
 }
