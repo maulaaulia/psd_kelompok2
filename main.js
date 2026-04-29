@@ -391,12 +391,23 @@ function showPopup(title, desc) {
   document.getElementById("popupText").innerText = title;
   document.getElementById("popupDesc").innerText = desc;
 
-  document.getElementById("popupModal").classList.add("active");
+  const modal = document.getElementById("popupModal");
+  modal.classList.add("active");
 }
 
 function closePopup() {
-  document.getElementById("popupModal").classList.remove("active");
+  const modal = document.getElementById("popupModal");
+
+  // safety reset
+  modal.classList.remove("active");
 }
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("popupModal");
+
+  if (e.target === modal) {
+    modal.classList.remove("active");
+  }
+});
 
 // ================= VIEW: TAMBAH (DENGAN JAM) =================
 function showAdd() {
