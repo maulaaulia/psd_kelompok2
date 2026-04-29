@@ -186,7 +186,7 @@ button {
   backdrop-filter: blur(20px);
   padding: 40px 30px; /* Diperlebar sedikit biar nafas */
   border-radius: 25px;
-  width: 320px;
+  width: 400px;
   text-align: center;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -202,7 +202,7 @@ button {
 /* Update di bagian .btn-login */
 /* Update di bagian .btn-login */
 .btn-login {
-  width: 120%;
+  width: 100%;
   padding: 12px;
   border-radius: 12px; /* Disamakan dengan input biar rapi */
   border: none;
