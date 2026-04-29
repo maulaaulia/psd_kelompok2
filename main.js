@@ -392,12 +392,22 @@ function showPopup(title, desc) {
   document.getElementById("popupDesc").innerText = desc;
 
   const modal = document.getElementById("popupModal");
-  modal.style.display = "flex"; // WAJIB FLEX biar center jalan
+  modal.classList.add("active");
 }
 
 function closePopup() {
-  document.getElementById("popupModal").style.display = "none";
+  const modal = document.getElementById("popupModal");
+
+  // safety reset
+  modal.classList.remove("active");
 }
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("popupModal");
+
+  if (e.target === modal) {
+    modal.classList.remove("active");
+  }
+});
 
 // ================= VIEW: TAMBAH (DENGAN JAM) =================
 function showAdd() {
