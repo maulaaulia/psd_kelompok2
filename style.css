@@ -19,45 +19,23 @@ body {
 }
 
 /* ================= SIDEBAR ================= */
-/* ================= SIDEBAR (FLOATING VERSION) ================= */
 aside {
-  width: 220px;
-  /* Gunakan margin untuk membuat efek melayang */
-  margin: 20px; 
-  
-  /* Kurangi opasitas (0.4 - 0.6 biasanya pas untuk background gradasi) */
-  background: rgba(255, 255, 255, 0.4); 
-  
-  /* Efek kaca (blur) diperkuat biar tetap terbaca walau redup */
-  backdrop-filter: blur(15px); 
-  -webkit-backdrop-filter: blur(15px);
-  
-  padding: 25px 20px;
+  width: 230px;
+  background: rgba(200, 220, 255, 0.85); /* cuma ganti warna */
+  backdrop-filter: blur(10px);
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
-  /* Buat semua sudut melengkung karena dia melayang */
-  border-radius: 24px; 
-  
-  /* Tambahkan border tipis putih agar terlihat lebih 'clean' */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  
-  /* Pastikan tinggi sidebar tidak full kalau mau melayang */
-  height: calc(100vh - 40px); 
-  box-sizing: border-box;
-}
-
-/* Biar konten di sebelah kanan tidak ketabrak sidebar */
-#app {
-  display: flex;
-  height: 100vh;
-  align-items: center; /* Opsional: biar sidebar & main content sejajar tengah */
+  border-radius: 0 20px 20px 0;
 }
 
 .logo {
   margin-bottom: 30px;
 }
+
+
+
 
 /* ================= NAV ================= */
 nav {
@@ -66,24 +44,50 @@ nav {
 }
 
 .nav-btn {
-  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
   padding: 12px;
   margin-bottom: 10px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #60a5fa, #93c5fd);
-  color: white;
+  border-radius: 14px;
+
+  background: transparent !important;
+  color: #cbd5f5;
+
+  border: none;
   cursor: pointer;
+
+  position: relative;
+  z-index: 10;
+
   transition: 0.3s;
 }
 
+/* efek klik modern */
+.nav-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.nav-btn:hover::before {
+  opacity: 1;
+}
+
 .nav-btn:hover {
-  transform: translateX(5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 15px rgba(99,102,241,0.6);
 }
 
 .nav-btn.active {
-  background: linear-gradient(135deg, #60a5fa, #93c5fd);
-  color: white;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  box-shadow:
+    0 0 10px #6366f1,
+    0 0 25px #8b5cf6;
 }
 
 .nav-btn span {
@@ -120,7 +124,8 @@ main {
 }
 
 .topbar h1 {
-  margin: 0;
+  font-size: 22px; /* sebelumnya besar */
+  font-weight: 600;
 }
 
 .user {
@@ -151,16 +156,73 @@ main {
   font-size: 15px;
 }
 
+/* ================= UPGRADE CARD (MODERN 3D) ================= */
+.card {
+  position: relative;
+  overflow: hidden;
+
+  transition: all 0.3s ease;
+}
+
+.card {
+  padding: 16px; /* sebelumnya 20px */
+}
+
+.card.big {
+  padding: 18px;
+}
+
+/* efek glow neon */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    120deg,
+    rgba(0, 255, 255, 0.15),
+    rgba(140, 0, 255, 0.15),
+    rgba(0, 255, 150, 0.15)
+  );
+
+  opacity: 0;
+  transition: 0.4s;
+}
+
+/* hover efek */
+.card:hover {
+  transform: translateY(-8px) scale(1.01);
+
+  box-shadow: 
+    0 15px 40px rgba(0,0,0,0.15),
+    0 0 20px rgba(0, 255, 255, 0.2),
+    0 0 40px rgba(140, 0, 255, 0.15);
+}
+
+/* aktifkan glow saat hover */
+.card:hover::before {
+  opacity: 1;
+}
 /* ================= GRID ================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
+  align-items: stretch;
+}
+
+.content {
+  margin-top: 15px;
+}
+
+.card + .card {
+  margin-top: 12px;
 }
 
 /* ================= NUMBER ================= */
 .number {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   margin-top: 10px;
 }
@@ -193,8 +255,13 @@ input:focus {
 }
 
 /* ================= BUTTON GENERAL ================= */
-button {
-  cursor: pointer;
+/* semua tombol harus di atas layer dekorasi */
+button,
+.nav-btn,
+.logout,
+.icon-btn-main {
+  position: relative;
+  z-index: 10;
 }
 
 /* ================= LOGIN MODERN ================= */
@@ -454,6 +521,26 @@ input[type="date"] {
   overflow: hidden;
 }
 
+/* LOGO KECIL DI KIRI */
+.login-container::before {
+  content: "";
+  position: absolute;
+
+  width: 120px;   /* kecil */
+  height: 120px;  /* kecil */
+
+  background: url("./img/login.png") no-repeat center;
+  background-size: contain;
+
+  opacity: 0.15;
+
+  left: 20px;   /* pinggir kiri */
+  top: 50%;
+  transform: translateY(-50%);
+
+  z-index: 0;
+  pointer-events: none;
+}
 
 /* ================= MODAL POPUP ================= */
 .modal {
@@ -600,69 +687,4 @@ input[type="date"] {
   width: 16px;
   height: 16px;
   opacity: 0.6;
-}
-
-/* MASKOT KANAN BAWAH */
-.login-container::after {
-  content: "";
-  position: absolute;
-
-  width: 410px; /* ukuran maskot */
-  height: 410px;
-
-  background: url("./img/login.png") no-repeat center;
-  background-size: contain;
-
-  right: 105px;
-  bottom: -20;
-
-  opacity: 0.9;
-
-  z-index: 0;
-  pointer-events: none;
-
-  /* efek biar modern */
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
-}
-
-/* BACKGROUND PIANO */
-.login-container::before {
-  content: "";
-  position: absolute;
-
-  width: 120%;
-  height: 120%;
-
-  background: url("./img/piano.png") no-repeat;
-  background-size: 80%;
-  background-position: left bottom;
-
-  opacity: 0.10;
-
-  z-index: 0;
-  pointer-events: none;
-}
-
-.login-card {
-  position: relative;
-  z-index: 2;
-
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(25px);
-
-  border: 1px solid rgba(255,255,255,0.3);
-
-  box-shadow: 
-    0 20px 40px rgba(0,0,0,0.08),
-    inset 0 0 10px rgba(255,255,255,0.4);
-}
-
-@keyframes floatMascot {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-
-.login-container::after {
-  animation: floatMascot 4s ease-in-out infinite;
 }

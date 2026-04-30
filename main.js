@@ -56,7 +56,7 @@ function showHome() {
 
   content.innerHTML = `
     <div class="card big" style="text-align: center; padding: 40px 20px;">
-      <img src="img/logo.png" style="width: 80px; margin-bottom: 20px;">
+      <img src="img/logo.png" style="width: 200px; margin-bottom: 20px;">
       <h2 style="color: #444;">Selamat Datang Kembali! ✨</h2>
       <p style="color: #777; margin-bottom: 30px;">Siap untuk menyelesaikan tugasmu hari ini dengan sistem LIFO?</p>
       
@@ -315,12 +315,14 @@ function addTodo() {
 }
 
 function removeTodo() {
-  if (kelarIn.length === 0) {
-    showPopup("Stack Kosong", "Belum ada tugas di tumpukan.");
-    return;
-  }
+  if (kelarIn.length === 0){
+    showPopup(
+   "Stack Kosong",
+   "Belum ada tugas di tumpukan."
+    );
+  return;
+}
 
-  // 1. Proses data (LIFO)
   const removed = kelarIn.pop();
   undoStack.push(removed);
   history.push(removed);
@@ -333,7 +335,7 @@ function removeTodo() {
   showPopup(
     "Pop Berhasil ✅",
     "Tugas " + removed.text + " dihapus dari stack."
-  );
+);
 }
 
 function toggleStatus(index) {
